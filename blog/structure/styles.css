@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(23, 22, 30);
+}
+
+#container {
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+#header {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Onest, sans-serif;
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
