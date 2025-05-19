@@ -1,0 +1,33 @@
+body {
+    background-color: #010B1B
+}
+
+#container {
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+#content {
+    background-color: #0B1224;
+    padding: 35px;
+    border-radius: 30px;
+}
+
+#header {
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Onest', sans-serif;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#title {
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    font-weight: bold;
+    font-family: 'Onest', sans-serif;
+}

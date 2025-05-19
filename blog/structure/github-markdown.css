@@ -10,8 +10,11 @@
   --fontStack-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
   --fgColor-accent: Highlight;
 }
+
 @media (prefers-color-scheme: dark) {
-  .markdown-body, [data-theme="dark"] {
+
+  .markdown-body,
+  [data-theme="dark"] {
     /* dark */
     color-scheme: dark;
     --focus-outlineColor: #1f6feb;
@@ -66,8 +69,11 @@
     --color-prettylights-syntax-sublimelinter-gutter-mark: #3d444d;
   }
 }
+
 @media (prefers-color-scheme: light) {
-  .markdown-body, [data-theme="light"] {
+
+  .markdown-body,
+  [data-theme="light"] {
     /* light */
     color-scheme: light;
     --focus-outlineColor: #0969da;
@@ -128,7 +134,7 @@
   -webkit-text-size-adjust: 100%;
   margin: 0;
   color: var(--fgColor-default);
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-family: "Geist mono", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -1096,7 +1102,7 @@
 .markdown-body g-emoji {
   display: inline-block;
   min-width: 1ch;
-  font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 1em;
   font-style: normal !important;
   font-weight: var(--base-text-weight-normal, 400);
@@ -1224,4 +1230,3 @@
 .markdown-body .highlight pre:has(+.zeroclipboard-container) {
   min-height: 52px;
 }
-
