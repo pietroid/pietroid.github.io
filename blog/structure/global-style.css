@@ -12,6 +12,8 @@ body {
     background-color: #0B1224;
     padding: 35px;
     border-radius: 30px;
+
+    text-align: justify;
 }
 
 #header-title {
@@ -41,6 +43,7 @@ body {
     text-decoration: none;
     font-size: 20px;
     margin-left: 40px;
+
 }
 
 #title {
