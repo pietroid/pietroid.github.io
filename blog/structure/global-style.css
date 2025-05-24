@@ -14,13 +14,33 @@ body {
     border-radius: 30px;
 }
 
-#header {
+#header-title {
     color: rgb(255, 255, 255);
     font-size: 30px;
     font-weight: bold;
     font-family: 'Onest', sans-serif;
     padding-top: 30px;
     padding-bottom: 30px;
+}
+
+#header {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#header-buttons a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 40px;
 }
 
 #title {
