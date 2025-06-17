@@ -7,6 +7,10 @@ on:
       - wip-build
   workflow_dispatch: # Allows manual triggering of the workflow
 
+permissions:
+  id-token: write
+  pages: write
+
 jobs:
   # Build job
   build:
