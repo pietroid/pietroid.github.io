@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - wip-build
   workflow_dispatch: # Allows manual triggering of the workflow
 
 permissions:
@@ -12,9 +11,7 @@ permissions:
   pages: write
 
 jobs:
-  # Build job
   build:
-    # Specify runner +  build & upload the static files as an artifact
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # specify the version you need
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
