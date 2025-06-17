@@ -23,6 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: builder 
 
       - name: Run Node program
         run: node index.js
