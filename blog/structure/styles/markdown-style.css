@@ -16,3 +16,7 @@ p {
 h1 {
     font-family: 'Onest', sans-serif;
 }
+
+a {
+    color: rgb(0, 130, 150);
+}
