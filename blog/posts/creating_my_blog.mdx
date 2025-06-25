@@ -1,19 +1,15 @@
-__
+---
+title: How I created my blog from scratch with vanilla JS, MDX Remark and Github Pages
+date: 2025-06-25
+---
 
-A simple blog with MDX.
+I already did in the past a [MDX](https://mdxjs.com/) based blog to write about my travel to Egypt (check this [here](https://pietroid.github.io/egypt-travelogue/)). Because I didn't want to spend too much time, I made a solution with [Jekyll](https://jekyllrb.com/) + Github actions (the recommended for doing github sites).
 
-I already tried in the past for a traveling blog to Egypt (check this here) a solution with Jekyll + Github actions (the recommended for doing github sites), but was a little disappointed on the way things didn't seem too easy to do.
+However, I got a bit disappointed in the way things didn't seem so simple to configure. I ended up needing to create a [jekyll theme](https://jekyll-themes.com/pietroid/egypt-travelogue-jekyll-theme) just to tune some CSS and make my blog look like I wanted, but the worst of all is that a lot of things I was doing kind of bindly, because it was based on Ruby and I am not familiar with it.
 
-Doing the traditional software development benchmarking and research (AKA googling), on "What's the best way to configure a blog with MDX?", I found multiple suggestions.
+For my official dev blog, I wanted something simple and at the same time powerful, so I can evolve it step by step. After researching a bit I found some candidates such as [Astro.js](https://astro.build/), [Next.js](https://nextjs.org/) (examples: [Next.js with React](https://www.joshwcomeau.com/blog/how-i-built-my-blog/), [Next.js with Tailwind](https://gaudion.dev/blog/nextjs-mdx-blog)).
 
-- Next.js with React ([example](https://www.joshwcomeau.com/blog/how-i-built-my-blog/))
-- Next.js with Tailwind ([example](https://gaudion.dev/blog/nextjs-mdx-blog))
-- Next.js github pages ([example](https://santhalakshminarayana.github.io/blog/build-blog-with-nextjs-mdx-and-deploy-to-github-pages))
-- Astro.js (https://astro.build/)
-
-I even found one exotic solution with rust (reference).
-
-But, let's be real: it shouldn't be that complex.
+Althought they seem to be highly configurable and well-maintained I felt that I still missed something about the process of doing it simpler. So I decided to try to build my own blog from scratch, using plain Javascript.
 
 ## Getting to the basics
 
@@ -21,7 +17,7 @@ What my solution should do is simple:
 
 1. Should process MDX so I don't bother myself with HTML/CSS every time I write a post
 2. Should deploy simply from a push to github repository so I don't bother to use any CMS or database
-3. Should be extensible and allow HTML/CSS in place if needed for demos/cool things I might wanna do in my website (for example, add a Flutter Web piece of code)
+3. Should be extensible and allow HTML/CSS in place if needed for demos/cool things I might wanna do in my website (for example, add a Flutter Web piece of code).
 
 # MDX
 
@@ -58,11 +54,12 @@ export default function MDXContent(props = {}) {
 ```
 
 That would be used on an actual file rendered by the browser.
+
 ## Github MDX
 
 I am used to writing MDX in the format Github usually recognizes, so that would be nice if I could use some parser that recognizes this.
 
-Luckily, this is readily mentioned on the [MDX guides section](https://mdxjs.com/guides/) (it's so simpler to just read the  documentation, AI prompters...), and now we dive into an interesting rabbit hole.
+Luckily, this is readily mentioned on the [MDX guides section](https://mdxjs.com/guides/) (it's so simpler to just read the documentation, AI prompters...), and now we dive into an interesting rabbit hole.
 
 ## Remark
 
