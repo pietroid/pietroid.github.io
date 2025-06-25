@@ -3,7 +3,7 @@ body {
 }
 
 #container {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     border-radius: 10px;
 }
@@ -17,13 +17,34 @@ body {
     flex-direction: row;
 }
 
+#divider {
+    flex: 0.1;
+
+}
+
+@media only screen and (max-width: 700px) {
+    #container {
+        width: 90%;
+    }
+
+    #content {
+        flex-direction: column-reverse;
+    }
+
+    #divider {
+        margin-top: 40px;
+    }
+}
+
+
 #header-title {
     color: rgb(255, 255, 255);
     font-size: 30px;
     font-weight: bold;
     font-family: 'Onest', sans-serif;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-decoration: none;
 }
 
 #header {
