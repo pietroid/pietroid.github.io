@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { processBlogPost } from './processor.js';
+import { processBlogPost, processScaffold } from './processor.js';
 
 /// Create the `compiled` folder
 fs.mkdirSync('../compiled', { recursive: true });
@@ -18,25 +18,30 @@ fs.cpSync('../blog/structure/styles', '../compiled/styles', {
     recursive: true
 });
 
-// /// List blog files
-// var files = fs.readdirSync('../blog/posts');
+/// List blog files
+var files = fs.readdirSync('../blog/posts');
 
-// /// Create the `compiled/posts` folder
-// fs.mkdirSync('../compiled/posts', { recursive: true });
+/// Create the `compiled/posts` folder
+fs.mkdirSync('../compiled/posts', { recursive: true });
 
 /// Read, process and write compiled file for each one of the MDX posts
-// for (var file of files) {
-//     /// Read the file content
-//     var content =
-//         fs.readFileSync(path.join('../blog/posts', file), 'utf8');
 
-//     /// Process the content        
-//     var processedContent = await processBlogPost(content);
+/// First, read the post scaffold
+var scaffoldContent = fs.readFileSync('../blog/structure/post_scaffold/index.html', 'utf8');
+var processedScaffold = await processScaffold(scaffoldContent);
 
-//     /// Write the processed file to compiled folder
-//     var filename = file.split('.')[0];
-//     var renderedFilename = filename + '.html';
-//     fs.writeFileSync(path.join('../compiled/posts', renderedFilename), processedContent);
-// }
+for (var file of files) {
+    /// Read the file content
+    var content =
+        fs.readFileSync(path.join('../blog/posts', file), 'utf8');
+
+    /// Process the content        
+    var processedContent = await processBlogPost(content, processedScaffold);
+
+    /// Write the processed file to compiled folder
+    var filename = file.split('.')[0];
+    var renderedFilename = filename + '.html';
+    fs.writeFileSync(path.join('../compiled/posts', renderedFilename), processedContent);
+}
 
 
