@@ -3,63 +3,35 @@ title: How I created my blog from scratch with vanilla JS, MDX Remark and Github
 date: 2025-06-25
 ---
 
-I already did in the past a [MDX](https://mdxjs.com/) based blog to write about my travel to Egypt (check this [here](https://pietroid.github.io/egypt-travelogue/)). Because I didn't want to spend too much time, I made a solution with [Jekyll](https://jekyllrb.com/) + Github actions (the recommended for doing github sites).
+I already did in the past a [MDX](https://mdxjs.com/) based blog to write about my travel to Egypt (check this [here](https://pietroid.github.io/egypt-travelogue/)). I didn't want to spend too much time, so I made a solution with [Jekyll](https://jekyllrb.com/) + Github pages, [the recommended approach from Github](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll).
 
-However, I got a bit disappointed in the way things didn't seem so simple to configure. I ended up needing to create a [jekyll theme](https://jekyll-themes.com/pietroid/egypt-travelogue-jekyll-theme) just to tune some CSS and make my blog look like I wanted, but the worst of all is that a lot of things I was doing kind of bindly, because it was based on Ruby and I am not familiar with it.
+However, I got a bit disappointed in the way things didn't seem so simple to configure. I ended up needing to create a [jekyll theme](https://jekyll-themes.com/pietroid/egypt-travelogue-jekyll-theme) just to tune some CSS and make my blog look like I wanted, but the worst thing is that a lot of things I was doing kind of bindly, because it was based on Ruby and I am not familiar with it.
 
-For my official dev blog, I wanted something simple and at the same time powerful, so I can evolve it step by step. After researching a bit I found some candidates such as [Astro.js](https://astro.build/), [Next.js](https://nextjs.org/) (examples: [Next.js with React](https://www.joshwcomeau.com/blog/how-i-built-my-blog/), [Next.js with Tailwind](https://gaudion.dev/blog/nextjs-mdx-blog)).
+For my official dev blog, I wanted something simple and at the same time powerful, so I could evolve it step by step. After researching a bit I found some candidates such as [Astro.js](https://astro.build/), [Next.js](https://nextjs.org/) (examples: [Next.js with React](https://www.joshwcomeau.com/blog/how-i-built-my-blog/), [Next.js with Tailwind](https://gaudion.dev/blog/nextjs-mdx-blog)).
 
-Althought they seem to be highly configurable and well-maintained I felt that I still missed something about the process of doing it simpler. So I decided to try to build my own blog from scratch, using plain Javascript.
+Althought they seem to be highly configurable and well-maintained I felt that I still missed something about the process of doing it simpler. So I decided to try to build my own blog from scratch, using plain Javascript. I missed the days I tinkered with things and built them from scratch, so I saw it as a good opportunity to ressurrect that feeling.
 
-## Getting to the basics
+# Getting to the basics
 
-What my solution should do is simple:
+Instead of vibe-coding, I wrote what I really wanted. The requisites were:
 
-1. Should process MDX so I don't bother myself with HTML/CSS every time I write a post
-2. Should deploy simply from a push to github repository so I don't bother to use any CMS or database
-3. Should be extensible and allow HTML/CSS in place if needed for demos/cool things I might wanna do in my website (for example, add a Flutter Web piece of code).
+1. The solution should process [MDX](https://mdxjs.com/) so I don't bother myself with HTML/CSS every time I write a post
+2. It should deploy simply from a push to github repository so I don't bother to use any CMS or database
+3. It should be extensible and allow specific HTML/CSS in place if needed for demos/cool things I might wanna do in my website (for example, embedded a Flutter Web piece of code).
 
 # MDX
 
-MDX is an extension on Markdown files that enables to render html and JSX inside the markdown content (https://mdxjs.com/)
-
-By the documentation, we can use its mdx-js lib to load any mdx and transform into a jsx document.
-
-What it does is basically:
+MDX is an extension on Markdown files that enables to render html and JSX inside the markdown content (https://mdxjs.com/). By the documentation, we can use its mdx-js lib to load any mdx and transform into a jsx document. Basically we could use a line of code like this to render a MDX file:
 
 ```
 const compiled = await compile(await fs.readFile('example.mdx'))
 ```
 
-It converts to this piece of js:
-
-```
-import {Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs} from 'react/jsx-runtime'
-
-export function Thing() {
-  return _jsx(_Fragment, {children: 'World'})
-}
-
-function _createMdxContent(props) {
-  const _components = {h1: 'h1', ...props.components}
-  return _jsxs(_components.h1, {children: ['Hello ', _jsx(Thing, {})]})
-}
-
-export default function MDXContent(props = {}) {
-  const {wrapper: MDXLayout} = props.components || {}
-  return MDXLayout
-    ? _jsx(MDXLayout, {...props, children: _jsx(_createMdxContent, {...props})})
-    : _createMdxContent(props)
-}
-```
-
-That would be used on an actual file rendered by the browser.
-
-## Github MDX
+# Github MDX
 
 I am used to writing MDX in the format Github usually recognizes, so that would be nice if I could use some parser that recognizes this.
 
-Luckily, this is readily mentioned on the [MDX guides section](https://mdxjs.com/guides/) (it's so simpler to just read the documentation, AI prompters...), and now we dive into an interesting rabbit hole.
+Luckily, this is readily mentioned on the [MDX guides section](https://mdxjs.com/guides/) (it's so simpler to just read the documentation), and now we dive into an interesting rabbit hole.
 
 ## Remark
 
@@ -67,7 +39,7 @@ Actually to render Github MDXs we need to use a `remark` , and what is [remark](
 
 > **remark** is a tool that transforms markdown with plugins. These plugins can inspect and change your markup. You can use remark on the server, the client, CLIs, deno, etc.
 
-Interesting. And reading more I found a beatiful piece of code:
+Interesting. Digging more I found a beatiful piece of code:
 
 ```
 import rehypeSanitize from 'rehype-sanitize'
@@ -86,32 +58,236 @@ const file = await unified()
 console.log(String(file))
 ```
 
-Seems very interesting because we can attach multiple kinds of plugins, on demand ([this is the list of the plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins), a LOT). I think it can help me leverage the #3 requirement.
+We can attach multiple kinds of plugins, on demand ([this is the list of the plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins), a LOT). We can also write custom plugins to do whatever we want with the markdown and the HTML content.
 
-# Styling and Scaffolding
+# Starting with the generator
 
-We can add any style or add any other data to the documents, such some button to the home or some list of blog contents. 
+Finding what I really wanted, I started to build a simple generator that would read the MDX files and generate HTML files from them. The concept is to have three separate folders:
 
-The point of using any package or library is essentially the ability to have out-of-the-box pre-configured app architecture/hierarchy. For example:
+1. `/blog`: where the MDX files are stored
+2. `/builder`: where the generator lives.
+3. `/compiled`: where the generated HTML files will be stored to be consumed on the final website.
 
-- a
-- b
-- c
+The most basic generator code looks like this:
 
-In this case, we also want the most simplistic one. As I want to do almost everything from scratch or using the most flexible and simplistic solutions, I want, for the first phase:
+```javascript
+import fs from 'fs';
+import path from 'path';
+import { processBlogPost } from './processor.js';
 
-- A home page
-- For each blog page:
-	- A header
-	- A footer
+/// Create the `compiled` folder
+fs.mkdirSync('../compiled', { recursive: true });
 
-There are some things also cool to tackle such as:
+/// List blog files
+var files = fs.readdirSync('../blog/posts');
 
-- Easy to create and locate images
-- Manageable paths and URLs
+for (var file of files) {
+    /// Read the file content
+    var content =
+        fs.readFileSync(path.join('../blog/posts', file), 'utf8');
+    
+    /// process the file content
+    var processedPost = await processBlogPost(content);
 
+    /// Write the processed file to compiled folder
+    var filename = file.split('.')[0];
+    var renderedFilename = filename + '.html';
+    fs.writeFileSync(path.join('../compiled/posts', renderedFilename), processedPost);
+}
+```
 
-# Github pages
+And the secret lies inside the `processBlogPost` function:
+
+```javascript
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+
+/// Transforms each blog post (as MDX) into HTML.
+
+export async function processBlogPost(content) {
+    var processed = await unified()
+        .use(remarkParse)
+        .use(remarkRehype)
+        .use(rehypeStringify)
+        .process(content);
+
+    return String(processed);
+}
+```
+
+What are the plugins the `processBlogPost` function is using?
+
+- `remarkParse`: Parses the markdown content into an abstract syntax tree (AST).
+- `remarkRehype`: Converts the markdown AST into a HTML AST.
+- `rehypeStringify`: Converts the HTML AST into a string of HTML.
+
+What I love about this is that it is so simple to understand and extend. If I want to add a plugin, I just need to add it to the chain of plugins in the `processBlogPost` function. 
+
+And that's precisely what we needed, because with just this simple function, you probably noticed that we have just a plain simple HTML page, without any styling or anything around its content.
+
+# Styling and scaffolding
+
+I created a simple HTML scaffolding that will be used to wrap the content of the posts. The idea is to have a simple HTML file that will be used as a template for each post, and then we can insert the content of the post inside a specific place in that template. The advantage is that this file already comes with the stylization as well.
+
+To be able to use that, I created a plugin that does the following:
+
+- Receives the HTML AST of the post
+- Receives the HTML AST of the scaffold
+- Replaces the content of the scaffold with the content of the post
+- Adds the title of the post to the scaffold 
+
+```javascript
+import { visit } from 'unist-util-visit';
+
+function addScaffold(options) {
+    const { scaffold } = options;
+
+    return function (tree, file) {
+        var contentTree = {};
+
+        /// Move properties from the original tree to contentTree
+        Object.assign(contentTree, tree);
+
+        /// Delete all properties from the original tree
+        Object.keys(tree).forEach(key => delete tree[key]);
+
+        /// Add the scaffold to the tree
+        Object.assign(tree, scaffold);
+
+        // Find the node with the id 'post-content' inside the 
+        visit(tree, 'element', (node) => {
+            if (node.properties && node.properties.id === 'post-content') {
+
+                /// Adds the contentTree to the whole post tree
+                node.children = contentTree.children
+
+                // Adds the title 
+                node.children.unshift({
+                    type: 'element',
+                    tagName: 'h1',
+                    properties: {
+                        'id': 'title',
+                    },
+                    children: [
+                        {
+                            type: 'text',
+                            value: file.data.frontmatter.title || 'No title provided'
+                        }
+                    ]
+                });
+            }
+        })
+    }
+}
+```
+
+# Reading the title from the MDX file
+
+You might be wondering how to read the title from the MDX file. The way we usually put that kind of information is using a frontmatter, which is a YAML block at the beginning of the MDX file. We can not only put the title there, but also other metadata such as date, author, etc. That is the front-matter of this post:
+
+```mdx
+---
+title: How I created my blog from scratch with vanilla JS, MDX Remark and Github Pages
+date: 2025-06-25
+--- 
+```
+
+To be able to read that, we can use the `remark-frontmatter` and `remark-parse-frontmatter` plugins. They will parse the frontmatter and make it available for the next plugins. To access this data, we can use the `file.data` structure, as instructed on the plugin documentation.
+
+# Putting everything together
+
+The final `processBlogPost` function looks like this:
+
+```javascript
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkParseFrontmatter from 'remark-parse-frontmatter';
+
+export async function processBlogPost(content, scaffold) {
+    var processed = await unified()
+        .use(remarkParse)
+        .use(remarkFrontmatter, ['yaml'])
+        .use(remarkParseFrontmatter)
+        .use(remarkRehype)
+        .use(addScaffold, { scaffold: scaffold })
+        .use(rehypeStringify)
+        .process(content);
+
+    return String(processed);
+}
+```
+
+The scaffold is provided from the main generator code and is a very simple script that reads the `index.html` file from the `post_scaffold` folder and converts it into a HTML AST that will be used to wrap the content of the post.
+
+# The index page
+
+Now, another similar challenge is to have a dynamic index page. Most of it will be static content, but we want to have a list of all the posts that were generated so you all can easily navigate through the past posts.
+
+The approach is very similar, but in this case we just need to read the index and insert a list of links inside a specific `div`:
+
+```javascript
+export async function processIndex(content, allPostsFrontmatter) {
+    var processed = await unified()
+        .use(rehypeParse, { fragment: false })
+        .use(addPostLinks, { allPostsFrontmatter: allPostsFrontmatter })
+        .use(rehypeStringify)
+        .process(content);
+
+    return String(processed);
+}
+
+/// Add links to the posts in the index page.
+/// The links will be added to the node with the id 'post-links'.
+
+function addPostLinks(options) {
+    const { allPostsFrontmatter } = options;
+
+    return function (tree) {
+        // Find the node with the id 'post-links'
+        visit(tree, 'element', (node) => {
+            if (node.properties && node.properties.id === 'post-links') {
+                // Clear existing children
+                node.children = [];
+                // Add links to each post
+                allPostsFrontmatter.forEach(post => {
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'a',
+                        properties: {
+                            href: `posts/${post.filename}.html`
+                        },
+                        children: [
+                            {
+                                type: 'text',
+                                value: `${post.date} - ${post.title}`
+                            }
+                        ]
+                    });
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'br',
+                        properties: {}
+                    });
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'br',
+                        properties: {}
+                    });
+                });
+            }
+        });
+    }
+}
+```
+
+We extracted the frontmatter from each post and passed this list to the `processIndex` function (`allPostsFrontmatter`), which will generate the HTML for the index page. The `addPostLinks` function will then add links to each post inside the `div` with the id `post-links`.
+
+# Last step: deploying to Github Pages
 
 One quick way to upload a site that I liked to use a lot is github pages. I like the way everything is integrated, you can use a github action and publish something on the page itself, and we don't have to worry about hosting files and configuring pipelines. 
 
@@ -161,32 +337,6 @@ jobs:
 
 The build stage produces the static contents and the deploy effectively sends the content to the github pages server using the `actions/deploy-pages@v4`
 
+# The final result
 
-# Wrapping everything up
-
-- Creating custom repository
-- Creating simple local generator with MDX
-- Adding the scaffolding and styling
-- Configuring action
-- Uploading the first page
-
-
-## Creating custom repository
-
-Per the github tutorial, you must just add a custom .github.io repository that it will be able to deploy directly as your own github page.
-
-I just created this repository with a index.html and it rendered the simplest site possible
-
-![[Pasted image 20250314163430.png]]
-
-## Creating custom local builder 
-
-For now, what needs to be done for the builder is fairly simple:
-
-1. Read a series of posts in MDX format inside some folder
-2. Compile each one of them inside a separate html page
-3. Generate a home page that references all those posts
-
-### 1. Reading posts inside folder
-
-Let's create a posts
+You can check the final result of the blog [here](https://pietroid.github.io/blog/). It is a simple blog, but it is extensible and I can add new features as I go.
