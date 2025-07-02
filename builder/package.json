@@ -22,6 +22,6 @@
   "scripts": {
     "build": "node index.js",
     "serve": "http-server -p 3000 -c-1 ../compiled",
-    "dev": "nodemon --watch ../ --exec \"npm run build && npm run serve\""
+    "dev": "nodemon --watch ../builder --watch ../blog --ext '*' --exec \"npm run build && npm run serve\""
   }
 }
