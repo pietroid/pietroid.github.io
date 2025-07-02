@@ -17,7 +17,58 @@ export async function processBlogPost(content, scaffold) {
         .use(rehypeStringify)
         .process(content);
 
+    return { postContent: String(processed), postFrontmatter: processed.data.frontmatter };
+}
+
+export async function processIndex(content, allPostsFrontmatter) {
+    var processed = await unified()
+        .use(rehypeParse, { fragment: false })
+        .use(addPostLinks, { allPostsFrontmatter: allPostsFrontmatter })
+        .use(rehypeStringify)
+        .process(content);
+
     return String(processed);
+}
+
+
+function addPostLinks(options) {
+    const { allPostsFrontmatter } = options;
+
+    return function (tree) {
+        // Find the node with the id 'post-links'
+        visit(tree, 'element', (node) => {
+            if (node.properties && node.properties.id === 'post-links') {
+                // Clear existing children
+                node.children = [];
+                // Add links to each post
+                allPostsFrontmatter.forEach(post => {
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'a',
+                        properties: {
+                            href: `posts/${post.filename}.html`
+                        },
+                        children: [
+                            {
+                                type: 'text',
+                                value: `${post.date} - ${post.title}`
+                            }
+                        ]
+                    });
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'br',
+                        properties: {}
+                    });
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'br',
+                        properties: {}
+                    });
+                });
+            }
+        });
+    }
 }
 
 export async function processScaffold(content) {

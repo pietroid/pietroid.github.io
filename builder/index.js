@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { processBlogPost, processScaffold } from './processor.js';
+import { processBlogPost, processScaffold, processIndex } from './processor.js';
 
 /// Create the `compiled` folder
 fs.mkdirSync('../compiled', { recursive: true });
@@ -30,18 +30,32 @@ fs.mkdirSync('../compiled/posts', { recursive: true });
 var scaffoldContent = fs.readFileSync('../blog/structure/post_scaffold/index.html', 'utf8');
 var processedScaffold = await processScaffold(scaffoldContent);
 
+var allPostsFrontmatter = [];
+
 for (var file of files) {
     /// Read the file content
     var content =
         fs.readFileSync(path.join('../blog/posts', file), 'utf8');
 
-    /// Process the content        
-    var processedContent = await processBlogPost(content, processedScaffold);
+    /// Extract frontmatter from the content
+    var { postContent, postFrontmatter } = await processBlogPost(content, processedScaffold);
+
+    postFrontmatter.filename = file.split('.')[0]; // Store the filename without extension
+
+    /// Store the frontmatter for later use in the index
+    allPostsFrontmatter.push(postFrontmatter);
 
     /// Write the processed file to compiled folder
     var filename = file.split('.')[0];
     var renderedFilename = filename + '.html';
-    fs.writeFileSync(path.join('../compiled/posts', renderedFilename), processedContent);
+    fs.writeFileSync(path.join('../compiled/posts', renderedFilename), postContent);
 }
 
+/// Then, modify the index.html file to include links to the posts
+var indexFilePath = '../compiled/index.html';
+var indexContent = fs.readFileSync(indexFilePath, 'utf8');
 
+var processedIndexContent = await processIndex(indexContent, allPostsFrontmatter);
+
+/// Write the processed index file to compiled folder
+fs.writeFileSync(indexFilePath, processedIndexContent);
