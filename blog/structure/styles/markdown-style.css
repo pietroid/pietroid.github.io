@@ -9,14 +9,40 @@
     word-wrap: break-word;
 }
 
-p {
-    color: rgb(210, 210, 210);
+p,
+li {
+    color: rgb(184, 192, 207);
 }
 
 h1 {
     font-family: 'Onest', sans-serif;
+    margin-top: 50px;
+}
+
+h2 {
+    font-family: 'Onest', sans-serif;
+    margin-top: 30px;
+    font-size: 1.6em;
 }
 
 a {
-    color: rgb(0, 172, 146);
+    color: rgb(7, 171, 200);
+}
+
+pre {
+    padding: 1.5em;
+    border-radius: 8px;
+    background-color: #1b2f3e;
+}
+
+code {
+    font-size: 0.9em;
+    color: #69d8d6;
+}
+
+blockquote {
+    border-left: 4px solid #3e6e7b;
+    padding-left: 1em;
+    margin-left: 0.5em;
+    color: rgb(184, 192, 207);
 }

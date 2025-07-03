@@ -19,7 +19,7 @@ Instead of vibe-coding, I wrote what I really wanted. The requisites were:
 2. It should deploy simply from a push to github repository so I don't bother to use any CMS or database
 3. It should be extensible and allow specific HTML/CSS in place if needed for demos/cool things I might wanna do in my website (for example, embedded a Flutter Web piece of code).
 
-# MDX
+## MDX
 
 MDX is an extension on Markdown files that enables to render html and JSX inside the markdown content (https://mdxjs.com/). By the documentation, we can use its mdx-js lib to load any mdx and transform into a jsx document. Basically we could use a line of code like this to render a MDX file:
 
@@ -27,7 +27,7 @@ MDX is an extension on Markdown files that enables to render html and JSX inside
 const compiled = await compile(await fs.readFile('example.mdx'))
 ```
 
-# Github MDX
+## Github MDX
 
 I am used to writing MDX in the format Github usually recognizes, so that would be nice if I could use some parser that recognizes this.
 
@@ -35,9 +35,9 @@ Luckily, this is readily mentioned on the [MDX guides section](https://mdxjs.com
 
 ## Remark
 
-Actually to render Github MDXs we need to use a `remark` , and what is [remark](https://github.com/remarkjs/remark)?
+Actually to render Github MDXs we need to use `remark`, and what is [remark](https://github.com/remarkjs/remark)?
 
-> **remark** is a tool that transforms markdown with plugins. These plugins can inspect and change your markup. You can use remark on the server, the client, CLIs, deno, etc.
+> _**remark** is a tool that transforms markdown with plugins. These plugins can inspect and change your markup. You can use remark on the server, the client, CLIs, deno, etc._
 
 Interesting. Digging more I found a beatiful piece of code:
 
@@ -127,7 +127,7 @@ What I love about this is that it is so simple to understand and extend. If I wa
 
 And that's precisely what we needed, because with just this simple function, you probably noticed that we have just a plain simple HTML page, without any styling or anything around its content.
 
-# Styling and scaffolding
+## Styling and scaffolding
 
 I created a simple HTML scaffolding that will be used to wrap the content of the posts. The idea is to have a simple HTML file that will be used as a template for each post, and then we can insert the content of the post inside a specific place in that template. The advantage is that this file already comes with the stylization as well.
 
@@ -183,7 +183,7 @@ function addScaffold(options) {
 }
 ```
 
-# Reading the title from the MDX file
+## Reading the title from the MDX file
 
 You might be wondering how to read the title from the MDX file. The way we usually put that kind of information is using a frontmatter, which is a YAML block at the beginning of the MDX file. We can not only put the title there, but also other metadata such as date, author, etc. That is the front-matter of this post:
 
@@ -224,7 +224,7 @@ export async function processBlogPost(content, scaffold) {
 
 The scaffold is provided from the main generator code and is a very simple script that reads the `index.html` file from the `post_scaffold` folder and converts it into a HTML AST that will be used to wrap the content of the post.
 
-# The index page
+## The index page
 
 Now, another similar challenge is to have a dynamic index page. Most of it will be static content, but we want to have a list of all the posts that were generated so you all can easily navigate through the past posts.
 
