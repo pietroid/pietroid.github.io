@@ -1,0 +1,399 @@
+---
+title: How I created my blog from scratch with Node.js, MDX Remark and Github Pages
+date: 07-03-2025
+---
+
+I already did in the past a [MDX](https://mdxjs.com/) based blog to write about my travel to Egypt (check this [here](https://pietroid.github.io/egypt-travelogue/)). I didn't want to spend too much time, so I made a solution with [Jekyll](https://jekyllrb.com/) + Github pages, [the recommended approach from Github](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll).
+
+However, I got a bit disappointed in the way things didn't seem so simple to configure. I ended up needing to create a [jekyll theme](https://jekyll-themes.com/pietroid/egypt-travelogue-jekyll-theme) just to tune some CSS and make my blog look like I wanted, but the worst is that a lot of things I was doing kind of bindly, because it was based on Ruby and I am not familiar with it.
+
+For my official dev blog, I wanted something simple and at the same time powerful, so I could evolve it step by step. After researching a bit I found some candidates such as [Astro.js](https://astro.build/), [Next.js](https://nextjs.org/) (examples: [Next.js with React](https://www.joshwcomeau.com/blog/how-i-built-my-blog/), [Next.js with Tailwind](https://gaudion.dev/blog/nextjs-mdx-blog)).
+
+Althought they seem to be highly configurable and well-maintained I felt that I still missed something about the process of doing it simpler. So I decided to try to build my own blog from scratch, using plain Javascript. 
+
+I missed the days I tinkered with things and built them from scratch, so I saw it as a good opportunity to ressurrect that feeling.
+
+# Getting to the basics
+
+Instead of vibe-coding, I wrote what I actually wanted. The requisites are:
+
+1. The solution should process [MDX](https://mdxjs.com/) so I don't bother myself with HTML/CSS every time I write a post.
+2. It should deploy simply from a push to a Github repository so I don't bother to use any CMS or database.
+3. It should be extensible and allow specific HTML/CSS to be embedded in the page if needed for demos/cool things I might wanna do in my website (for example, [embed a Flutter Web piece of code](https://docs.flutter.dev/platform-integration/web/embedding-flutter-web)).
+
+## MDX
+
+MDX is an extension on [Markdown format](https://www.markdownguide.org/) that enables to render html and JSX inside the markdown content ([https://mdxjs.com/](https://mdxjs.com/)). By the documentation, we can use its mdx-js lib to load any mdx and transform into a jsx document. Basically we could use a line of code like this to render a MDX file:
+
+```
+const compiled = await compile(await fs.readFile('example.mdx'))
+```
+
+## Github MDX
+
+I am used to writing MDX in the format Github usually recognizes, so that would be nice if I could use some parser that recognizes this.
+
+Luckily, this is readily mentioned on the [MDX guides section](https://mdxjs.com/guides/) (it's so simpler to just read the documentation), and now we dive into an interesting rabbit hole.
+
+## Remark
+
+Actually to render Github MDXs we need to use `remark`, and what is [remark](https://github.com/remarkjs/remark)?
+
+> _**remark** is a tool that transforms markdown with plugins. These plugins can inspect and change your markup. You can use remark on the server, the client, CLIs, deno, etc._
+
+Interesting. Digging more I found a beatiful piece of code:
+
+```
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeSanitize)
+  .use(rehypeStringify)
+  .process('# Hello, Neptune!')
+
+console.log(String(file))
+```
+
+We can attach multiple kinds of plugins, on demand ([this is the list of the plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins), a LOT). We can also write custom plugins to do whatever we want with the markdown and the HTML content.
+
+# Starting with the generator
+
+Finding what I really wanted, I started to build a simple generator that would read the MDX files and generate HTML files from them. The concept is to have three separate folders:
+
+1. `/blog`: where the MDX files are stored. This is where I will spend most of my time (I hope so) writing the posts.
+2. `/builder`: where the generator lives (and the following sections will be to explain how it works).
+3. `/compiled`: where the generated HTML files will be stored to be uploaded to the server.
+
+The most basic generator code looks like this:
+
+```javascript
+import fs from 'fs';
+import path from 'path';
+import { processBlogPost } from './processor.js';
+
+/// Create the `compiled` folder
+fs.mkdirSync('../compiled', { recursive: true });
+
+/// List blog files
+var files = fs.readdirSync('../blog/posts');
+
+for (var file of files) {
+    /// Read the file content
+    var content =
+        fs.readFileSync(path.join('../blog/posts', file), 'utf8');
+    
+    /// process the file content
+    var processedPost = await processBlogPost(content);
+
+    /// Write the processed file to compiled folder
+    var filename = file.split('.')[0];
+    var renderedFilename = filename + '.html';
+    fs.writeFileSync(path.join('../compiled/posts', renderedFilename), processedPost);
+}
+```
+
+And the secret lies inside the `processBlogPost` function:
+
+```javascript
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+
+/// Transforms each blog post (as MDX) into HTML.
+
+export async function processBlogPost(content) {
+    var processed = await unified()
+        .use(remarkParse)
+        .use(remarkRehype)
+        .use(rehypeStringify)
+        .process(content);
+
+    return String(processed);
+}
+```
+
+What are the plugins `processBlogPost` function is using?
+
+- `remarkParse`: Parses the markdown content into an abstract syntax tree (AST).
+- `remarkRehype`: Converts the markdown AST into a HTML AST.
+- `rehypeStringify`: Converts the HTML AST into a string of HTML.
+
+What I love about this is that it is so simple to understand and extend. If I want to add a plugin, I just need to add it to the chain of plugins in the `processBlogPost` function. 
+
+And that's precisely what we needed, because with just this simple function, you probably noticed that we have just a plain simple HTML page, without any styling or anything around its content.
+
+## Styling and scaffolding
+
+I created a simple HTML scaffolding that will be used to wrap the content of the posts. The idea is to have a simple HTML file that will be used as a template for each post, and then the generator inserts the content of the post inside the template.
+
+To be able to use that, I created a plugin that does the following:
+
+- Receives the HTML AST of the post
+- Receives the HTML AST of the scaffold
+- Replaces the content of the scaffold with the content of the post
+- Adds the title of the post to the scaffold 
+
+```javascript
+import { visit } from 'unist-util-visit';
+
+function addScaffold(options) {
+    const { scaffold } = options;
+
+    return function (tree, file) {
+        var contentTree = {};
+
+        /// Move properties from the original tree to contentTree
+        Object.assign(contentTree, tree);
+
+        /// Delete all properties from the original tree
+        Object.keys(tree).forEach(key => delete tree[key]);
+
+        /// Add the scaffold to the tree
+        Object.assign(tree, scaffold);
+
+        // Find the node with the id 'post-content' inside the 
+        visit(tree, 'element', (node) => {
+            if (node.properties && node.properties.id === 'post-content') {
+
+                /// Adds the contentTree to the whole post tree
+                node.children = contentTree.children
+
+                // Adds the title 
+                node.children.unshift({
+                    type: 'element',
+                    tagName: 'h1',
+                    properties: {
+                        'id': 'title',
+                    },
+                    children: [
+                        {
+                            type: 'text',
+                            value: file.data.frontmatter.title || 'No title provided'
+                        }
+                    ]
+                });
+            }
+        })
+    }
+}
+```
+
+## Reading the title from the MDX file
+
+You might be wondering how to read the title from the MDX file. The way we usually put that kind of information is using [frontmatter](https://docs.github.com/en/contributing/writing-for-github-docs/using-yaml-frontmatter), which is a YAML block at the beginning of the MDX file. We can not only put the title there, but also other metadata such as date, author, etc. 
+
+This is the frontmatter of this post:
+
+```mdx
+---
+title: How I created my blog from scratch with Node.js, MDX Remark and Github Pages
+date: 07-03-2025
+--- 
+```
+
+To be able to read that, we can then use the [remark-frontmatter](https://github.com/remarkjs/remark-frontmatter) and [remark-parse-frontmatter](https://www.npmjs.com/package/remark-parse-frontmatter) plugins. They will parse the frontmatter and make it available for the next plugins to use. To access this data, we can use the `file.data` structure, as instructed on the [plugin documentation](https://www.npmjs.com/package/remark-parse-frontmatter).
+
+# Putting everything together
+
+The final `processBlogPost` function looks like this:
+
+```javascript
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkParseFrontmatter from 'remark-parse-frontmatter';
+
+export async function processBlogPost(content, scaffold) {
+    var processed = await unified()
+        .use(remarkParse)
+        .use(remarkFrontmatter, ['yaml'])
+        .use(remarkParseFrontmatter)
+        .use(remarkRehype)
+        .use(addScaffold, { scaffold: scaffold })
+        .use(rehypeStringify)
+        .process(content);
+
+    return String(processed);
+}
+```
+
+Wrapping everything-up, it does the following:
+
+1. Parses the MDX content using `remarkParse`.
+2. Parses the frontmatter using `remarkFrontmatter` and `remarkParseFrontmatter`.
+3. Converts the markdown AST to a HTML AST using `remarkRehype`.
+4. Adds the scaffold to the HTML AST using the `addScaffold` plugin.
+5. Converts the HTML AST to a string of HTML using `rehypeStringify`.
+
+The scaffold in this function is already provided as a HTML AST from the `index.js`. It comes from a fixed known HTML file on the `/blog/structure/post_scaffold/index.html`, processed through a very simple function called `processScaffold`:
+
+```javascript
+export async function processScaffold(content) {
+    var processed = await unified()
+        .use(rehypeParse, { fragment: false })
+        .parse(content);
+
+    return processed;
+}
+```
+
+## The home page
+
+Now, another similar challenge is to have a dynamic home page. Most of it will be static content, but we want to have a list of all the posts that were generated so you all can easily navigate through the past posts.
+
+The approach is very similar, but in this case we just need to read the pre-made home page on `/blog/structure/index.html` and insert a list of links inside a specific `div` with id `post-links`:
+
+```javascript
+export async function processHome(content, allPostsFrontmatter) {
+    var processed = await unified()
+        .use(rehypeParse, { fragment: false })
+        .use(addPostLinks, { allPostsFrontmatter: allPostsFrontmatter })
+        .use(rehypeStringify)
+        .process(content);
+
+    return String(processed);
+}
+
+/// Add links to the posts in the index page.
+/// The links will be added to the node with the id 'post-links'.
+
+function addPostLinks(options) {
+    const { allPostsFrontmatter } = options;
+
+    return function (tree) {
+        // Find the node with the id 'post-links'
+        visit(tree, 'element', (node) => {
+            if (node.properties && node.properties.id === 'post-links') {
+                // Clear existing children
+                node.children = [];
+                // Add links to each post
+                allPostsFrontmatter.forEach(post => {
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'a',
+                        properties: {
+                            href: `posts/${post.filename}.html`
+                        },
+                        children: [
+                            {
+                                type: 'text',
+                                value: `${post.date} - ${post.title}`
+                            }
+                        ]
+                    });
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'br',
+                        properties: {}
+                    });
+                    node.children.push({
+                        type: 'element',
+                        tagName: 'br',
+                        properties: {}
+                    });
+                });
+            }
+        });
+    }
+}
+```
+
+Where does the `allPostsFrontmatter` comes from? We extracted beforehand the frontmatter from all the posts and stored it.
+
+# Last step: deploying to Github Pages
+
+I don't want to care about hosting or spend too much time configuring a deploying pipeline, I considered [Github Pages](https://pages.github.com/) a good option. It is free, easy to use and integrates well with Github repositories. Note that the solution I wrote so far is agnostic to any deployment/hosting solution, it just generates static HTML files that can be hosted anywhere.
+
+## Understanding github pages
+
+[Here is the doc](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) explaining thoroughly what needs to be done. In general, the process is very simple. Let's break down the github action steps:
+
+First of all, the most easy step, we need to setup the trigger for the action. In this case I left the action to be triggered on every push to the `main` branch. This means that every post that is ready I will just push to the `main` branch and the action will be triggered automatically.
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering of the workflow
+```
+
+The next part is important one to allow for the github pages to work. We need to allow for some permissions, which are the `id-token` and `pages` write permissions:
+
+```yaml
+permissions:
+  id-token: write
+  pages: write
+```
+
+Now, let's get our hands dirty and code the actual jobs. The first job is the build job, which will build the static site from the MDX files:
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: builder 
+
+      - name: Run Node program
+        run: node index.js
+        working-directory: builder 
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: compiled/
+```
+
+It will do the following:
+
+1. Checkout the repository.
+2. Setup Node.js environment.
+3. Install the node dependencies under the `builder` directory. (This is where the generator code lives).
+4. The final step is very specific for this use case and is the recommended approach from Github to be able to upload the static files to the Github Pages server. It uses the `actions/upload-pages-artifact@v3` action to upload the contents of the `compiled/` directory [as an artifact](https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow).
+
+Now we are almost done. We just need to deploy the static files to the Github Pages server. For that, we will use the `actions/deploy-pages@v4` action, which will take care of deploying the static files to the Github Pages server.
+
+```yaml
+# Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+The `steps.deployment.outputs.page_url` env variable is already defined if you configured properly your github pages as instructed [in the documentation](https://pages.github.com/).
+
+🚀 Now everything is done! 
+
+# The final result
+
+There are some details I left uncommented, such as using [nodemon](https://www.npmjs.com/package/nodemon) to make it easy to develop locally and how I did my styling and the Scaffold & Home content itself, but maybe I can leave it for another post.
+
+Everything I just shared here is completly open source and available on [this Github repository](https://github.com/pietroid/pietroid.github.io). Take a look at the README.md and feel free to re-use it for your needs!

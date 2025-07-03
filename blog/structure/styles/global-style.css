@@ -17,9 +17,15 @@ body {
     flex-direction: row;
 }
 
+#post-content {
+    background-color: #0B1224;
+    padding: 50px;
+    border-radius: 30px;
+    text-align: justify;
+}
+
 #divider {
     flex: 0.1;
-
 }
 
 @media only screen and (max-width: 700px) {
@@ -71,7 +77,7 @@ body {
 #title {
     color: rgb(255, 255, 255);
     font-size: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     margin-top: 0px;
     font-weight: bold;
     font-family: 'Onest', sans-serif;
