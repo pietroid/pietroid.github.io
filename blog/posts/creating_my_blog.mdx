@@ -313,40 +313,73 @@ Where does the `allPostsFrontmatter` comes from? We extracted beforehand the fro
 
 I don't want to care about hosting or spend too much time configuring a deploying pipeline, I considered [Github Pages](https://pages.github.com/) a good option. It is free, easy to use and integrates well with Github repositories. Note that the solution I wrote so far is agnostic to any deployment/hosting solution, it just generates static HTML files that can be hosted anywhere.
 
-## Custom pipeline
-
-One thing that I actually not liked was to using the default github pages recommendation, Jekyll. Although seemingly well [documented](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll), it seemed confused and I didn't have the feeling I knew what was going on.
-
 ## Understanding github pages
 
-Github pages is not really clear on how it does all its processes. But it basically takes a branch and can, via some action, transform into a static site that will be consumed by github pages.
+[Here is the doc](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) explaining thoroughly what needs to be done. In general, the process is very simple. Let's break down the github action steps:
 
-[Here is the doc](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) explaining what needs to be done. We just need a simple action that does things such as:
+First of all, the most easy step, we need to setup the trigger for the action. In this case I left the action to be triggered on every push to the `main` branch. This means that every post that is ready I will just push to the `main` branch and the action will be triggered automatically.
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering of the workflow
+```
+
+The next part is important one to allow for the github pages to work. We need to allow for some permissions, which are the `id-token` and `pages` write permissions:
+
+```yaml
+permissions:
+  id-token: write
+  pages: write
+```
+
+Now, let's get our hands dirty and code the actual jobs. The first job is the build job, which will build the static site from the MDX files:
 
 ```yaml
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  # Deployment job
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: builder 
+
+      - name: Run Node program
+        run: node index.js
+        working-directory: builder 
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: compiled/
+```
+
+It will do the following:
+
+1. Checkout the repository.
+2. Setup Node.js environment.
+3. Install the node dependencies under the `builder` directory. (This is where the generator code lives).
+4. The final step is very specific for this use case and is the recommended approach from Github to be able to upload the static files to the Github Pages server. It uses the `actions/upload-pages-artifact@v3` action to upload the contents of the `compiled/` directory [as an artifact](https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow).
+
+Now we are almost done. We just need to deploy the static files to the Github Pages server. For that, we will use the `actions/deploy-pages@v4` action, which will take care of deploying the static files to the Github Pages server.
+
+```yaml
+# Deployment job
   deploy:
     environment:
       name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -355,10 +388,12 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-The build stage produces the static contents and the deploy effectively sends the content to the github pages server using the `actions/deploy-pages@v4`
+The `steps.deployment.outputs.page_url` env variable is already defined if you configured properly your github pages as instructed [in the documentation](https://pages.github.com/).
+
+🚀 Now everything is done! 
 
 # The final result
 
-There are some details I left uncommented, such as how I did my styling and the Scaffold & Home content itself, but I think it's better to leave it for another post, as the styles per se are really simple and more a matter of Design than development.
+There are some details I left uncommented, such as using [nodemon](https://www.npmjs.com/package/nodemon) to make it easy to develop locally and how I did my styling and the Scaffold & Home content itself, but maybe I can leave it for another post.
 
-Everything I just shared here is completly open source and available on [this Github repository](https://github.com/pietroid/pietroid.github.io). Take a look at the README.md and feel free to use it!
+Everything I just shared here is completly open source and available on [this Github repository](https://github.com/pietroid/pietroid.github.io). Take a look at the README.md and feel free to re-use it for your needs!
