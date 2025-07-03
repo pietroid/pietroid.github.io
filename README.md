@@ -34,6 +34,6 @@ Congratulations 🚀! It should be available on `localhost:3000`!
 
 ## How it works
 
-The builder is very simple, you can take a look at the `index.js` and see how it compiles the files to HTML. But I have an article explaining about this on my blog: 
+The builder is very simple, you can take a look at the [index.js](https://github.com/pietroid/pietroid.github.io/blob/main/builder/index.js) and see how it compiles the files to HTML. But I have an article explaining about this on my blog: 
 
-[How I created my blog from scratch with Node.js, MDX Remark and Github Pages](posts/creating_my_blog.html)
+[How I created my blog from scratch with Node.js, MDX Remark and Github Pages](https://pietroid.github.io/posts/creating_my_blog.html)
