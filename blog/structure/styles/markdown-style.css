@@ -38,6 +38,8 @@ pre {
 code {
     font-size: 0.9em;
     color: #69d8d6;
+    white-space: pre-wrap;
+    /* preserves whitespace and wraps lines */
 }
 
 blockquote {
