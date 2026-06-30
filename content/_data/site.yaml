@@ -1,0 +1,5 @@
+# Site Configuration
+titleBase: "pietroid"
+favicon: favicon.ico
+# Served from a GitHub Pages user site root.
+base: /
