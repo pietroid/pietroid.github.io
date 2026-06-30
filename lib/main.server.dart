@@ -15,6 +15,7 @@ import 'package:jaspr_content/components/sidebar.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 import 'package:jaspr_content/theme.dart';
 
+import 'components/apps.dart';
 import 'github_pages_base.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
@@ -48,6 +49,7 @@ void main() {
         link(rel: 'icon', type: 'image/png', href: '${base}assets/favicon-32x32.png', attributes: {'sizes': '32x32'}),
         link(rel: 'icon', type: 'image/png', href: '${base}assets/favicon-16x16.png', attributes: {'sizes': '16x16'}),
         link(rel: 'manifest', href: '${base}assets/site.webmanifest'),
+        script(src: '${base}flutter_bootstrap.js', async: true),
       ],
       body: ContentApp(
         // Enables mustache templating inside the markdown files.
@@ -66,6 +68,8 @@ void main() {
           Callout(),
           // Adds zooming and caption support to images.
           Image(zoom: true),
+          // Embeds the Flutter apps grid demo.
+          Apps(),
         ],
         layouts: [
           // Out-of-the-box layout for documentation sites.
@@ -92,7 +96,7 @@ void main() {
                       href: '${base}posts/creating_my_blog',
                     ),
                     SidebarLink(
-                      text: "I migrated my Blog tool to use Jaspr - Dart Web Framework solution - here's Why",
+                      text: 'Jaspr Announcement',
                       href: '${base}posts/jaspr_announcement',
                     ),
                   ],

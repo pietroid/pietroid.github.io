@@ -22,6 +22,12 @@ jobs:
         with:
           sdk: 3.12.1
 
+      # Flutter is required because this site embeds a Flutter widget via jaspr_flutter_embed.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.1'
+          channel: 'stable'
+
       - name: 'Build Jaspr'
         run: |
           dart pub global activate jaspr_cli

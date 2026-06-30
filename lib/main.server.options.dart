@@ -11,6 +11,8 @@ import 'package:jaspr_content/components/callout.dart' as _callout;
 import 'package:jaspr_content/components/image.dart' as _image;
 import 'package:jaspr_content/components/sidebar_toggle_button.dart'
     as _sidebar_toggle_button;
+import 'package:pietroid_github_io/components/apps_client_component.dart'
+    as _apps_client_component;
 
 /// Default [ServerOptions] for use with your Jaspr project.
 ///
@@ -38,6 +40,10 @@ ServerOptions get defaultServerOptions => ServerOptions(
     _sidebar_toggle_button.SidebarToggleButton:
         ClientTarget<_sidebar_toggle_button.SidebarToggleButton>(
           'jaspr_content:sidebar_toggle_button',
+        ),
+    _apps_client_component.AppsClientComponent:
+        ClientTarget<_apps_client_component.AppsClientComponent>(
+          'apps_client_component',
         ),
   },
   styles: () => [

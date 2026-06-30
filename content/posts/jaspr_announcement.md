@@ -8,7 +8,8 @@ Welcome back! My first ever post in this blog was how [I created my own blogging
 And after more than a year, I'm again reintroducing a new blogging tool to this site 😂
 
 But now for a good reason. I was researching how I could publish my Flutter work to the world, and then by my ecosystem, I gravitated naturally to Jaspr - It's a native web framework in Dart. What?
-<Image src="images/jaspr.png" width="0.2" caption="I never thought I would see Dart for Web 🤔"/>
+
+<Image src="images/jaspr.png" caption="I never thought I would see Dart for Web 🤔"/>
 
 Let me explain, while Flutter Web is a reality and works good, Jaspr comes to solve the other part: how would you do web development in Dart?
 
@@ -27,3 +28,5 @@ Also, I figured out three hypotheses I wanted to verify:
 ## Final result
 
 Well, what you are just seeing is the final result.
+
+<Apps/>
