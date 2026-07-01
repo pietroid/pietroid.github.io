@@ -89,15 +89,15 @@ void main() {
             sidebar: Sidebar(
               groups: [
                 SidebarGroup(
-                  title: 'Posts',
+                  title: 'Latest Posts',
                   links: [
                     SidebarLink(
-                      text: 'How I created my blog from scratch with Node.js, MDX Remark and Github Pages',
-                      href: '${base}posts/creating_my_blog',
+                      text: 'Migrating my Blog to Jaspr',
+                      href: '${base}posts/jaspr_announcement',
                     ),
                     SidebarLink(
-                      text: 'Jaspr Announcement',
-                      href: '${base}posts/jaspr_announcement',
+                      text: 'My Blog with MDX and Github Pages',
+                      href: '${base}posts/creating_my_blog',
                     ),
                   ],
                 ),

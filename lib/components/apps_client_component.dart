@@ -23,20 +23,20 @@ class AppsClientComponent extends StatelessComponent {
   Component build(BuildContext context) {
     final List<({String label, Widget Function() builder})> items = [
       (
-        label: 'E-commerce app',
-        builder: () => widget.FirstAppWidget(),
-      ),
-      (
-        label: 'Social network app',
-        builder: () => widget.SecondAppWidget(),
-      ),
-      (
         label: 'Todo list app',
         builder: () => widget.ThirdAppWidget(),
       ),
       (
         label: 'Text editor app',
         builder: () => widget.FourthAppWidget(),
+      ),
+      (
+        label: 'E-commerce app',
+        builder: () => widget.FirstAppWidget(),
+      ),
+      (
+        label: 'Social network app',
+        builder: () => widget.SecondAppWidget(),
       ),
     ];
 
@@ -51,23 +51,23 @@ class AppsClientComponent extends StatelessComponent {
             for (final item in items)
               div(
                 styles: Styles(
-                  boxSizing: BoxSizing.borderBox,
+                  display: Display.flex,
                   width: 100.percent,
                   height: 100.percent,
+                  boxSizing: BoxSizing.borderBox,
                   border: Border.all(style: BorderStyle.solid, color: primaryColor),
                   radius: BorderRadius.circular(cardBorderRadius.px),
                   overflow: Overflow.hidden,
-                  display: Display.flex,
                   flexDirection: FlexDirection.column,
                 ),
                 [
                   div(
                     styles: Styles(
                       padding: Padding.all(8.px),
-                      backgroundColor: primaryColor,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
                       textAlign: TextAlign.center,
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: primaryColor,
                     ),
                     [Component.text(item.label)],
                   ),
@@ -75,6 +75,7 @@ class AppsClientComponent extends StatelessComponent {
                     styles: Styles(
                       width: cardWidth.px,
                       height: cardHeight.px,
+                      alignSelf: AlignSelf.center,
                     ),
                     [
                       FlutterEmbedView.deferred(

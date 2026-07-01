@@ -31,5 +31,6 @@ In the era of lifeless automatons where creativity barely exists, maybe this blo
 
 ## Latest posts
 
+[07-03-2025 - I migrated my Blog publishing tool to a Dart Web Framework - here's Why](posts/jaspr_announcement)
 
 [07-03-2025 - How I created my blog from scratch with Node.js, MDX Remark and Github Pages](posts/creating_my_blog)

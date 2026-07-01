@@ -27,11 +27,13 @@ Also, I figured out three hypotheses I wanted to verify:
 
 ## Final result
 
-Well, what you are just seeing is the final result. 
+Well, what you are just seeing is the final result. All this site.
 
-Four completely different Flutter Apps, completely different contexts, all running here, in real time, as you would run in your own device!
+Bonus: Scroll down and you will see four completely different Flutter Apps, completely different contexts, all running here, in real time, interactive! Play with it! 
 
 <Apps/>
+
+Now imagine the possibilities of showing casing Flutter Apps and experiences in a single web page, with the same code base, fully integrated with a Markdown file.
 
 ## Was it worth it?
 
@@ -41,6 +43,7 @@ I should write a full post about this, but in a couple of words I would say "Tot
 - Embedding Flutter requires only [three things](https://docs.jaspr.site/going_further/flutter_embedding). There are in fact some other tweaks I needed to do, but after figuring out it worked pretty well.
 - Publishing to Github pPges was also a bit tricky mainly because of some things I needed to mind about base paths and assets, for that I made a [working template](https://github.com/pietroid/jaspr_github_pages).
 - The weakest point: Some details are still missing in the documentation, and there isn't much reference on the community.
-- The strongest point: Integrated Flutter development with a Web Page. Once you create your own Jaspr Component, it can be called simply with a tag <NameYourApp/> and you can edit all the contents of your Flutter App in the same project, meaning hot reload, Dart Analyzer, etc. Also all constants, variables and even state on the Jaspr Website structure can be used inside the Flutter App transparently and vice-versa.
+- The strongest point: Integrated Flutter development with a Web Page. Once you create your own Jaspr Component, it can be called simply with a tag like `<NameYourApp/>` and you can edit all the contents of your Flutter App in the same project, meaning hot reload, Dart Analyzer, etc. 
+- Also all constants, variables and even state on the Jaspr Website structure can be used inside the Flutter App transparently and vice-versa.
 
 The final result can be seen at https://github.com/pietroid/pietroid.github.io.
