@@ -37,13 +37,13 @@ Now imagine the possibilities of showing casing Flutter Apps and experiences in 
 
 ## Was it worth it?
 
-I should write a full post about this, but in a couple of words I would say "Totally Worth it!". Some highlights:
+I should write a full post about the implementation details, but in a couple of words I would say "Totally Worth it!". Some highlights:
 
 - Jaspr can be initiated as a simple MDX blog in a matter of minutes, using the https://docs.jaspr.site/content. Also, there is one easy command `jaspr serve` that makes your site works locally in the famous http://localhost:8080/. No other configs needed.
 - Embedding Flutter requires only [three things](https://docs.jaspr.site/going_further/flutter_embedding). There are in fact some other tweaks I needed to do, but after figuring out it worked pretty well.
-- Publishing to Github pPges was also a bit tricky mainly because of some things I needed to mind about base paths and assets, for that I made a [working template](https://github.com/pietroid/jaspr_github_pages).
+- Publishing to Github Pages was also a bit tricky mainly because of some things I needed to mind about base paths and assets, for that I made a [working template](https://github.com/pietroid/jaspr_github_pages).
 - The weakest point: Some details are still missing in the documentation, and there isn't much reference on the community.
 - The strongest point: Integrated Flutter development with a Web Page. Once you create your own Jaspr Component, it can be called simply with a tag like `<NameYourApp/>` and you can edit all the contents of your Flutter App in the same project, meaning hot reload, Dart Analyzer, etc. 
-- Also all constants, variables and even state on the Jaspr Website structure can be used inside the Flutter App transparently and vice-versa.
+- Also all constants, variables and even state on the Jaspr Website structure can be used inside the Flutter App transparently and vice-versa (more to explore on this!).
 
 The final result can be seen at https://github.com/pietroid/pietroid.github.io.
