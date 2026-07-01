@@ -23,19 +23,19 @@ class AppsClientComponent extends StatelessComponent {
   Component build(BuildContext context) {
     final List<({String label, Widget Function() builder})> items = [
       (
-        label: 'Flutter App one: bla bla',
+        label: 'E-commerce app',
         builder: () => widget.FirstAppWidget(),
       ),
       (
-        label: 'Flutter App two: etc',
+        label: 'Social network app',
         builder: () => widget.SecondAppWidget(),
       ),
       (
-        label: 'Flutter App three: foo bar',
+        label: 'Todo list app',
         builder: () => widget.ThirdAppWidget(),
       ),
       (
-        label: 'Flutter App four: baz qux',
+        label: 'Text editor app',
         builder: () => widget.FourthAppWidget(),
       ),
     ];
@@ -73,17 +73,16 @@ class AppsClientComponent extends StatelessComponent {
                   ),
                   div(
                     styles: Styles(
-                      flex: Flex.grow(1),
-                      minWidth: cardWidth.px,
-                      minHeight: cardHeight.px,
+                      width: cardWidth.px,
+                      height: cardHeight.px,
                     ),
                     [
                       FlutterEmbedView.deferred(
                         constraints: ViewConstraints(
                           minWidth: cardWidth,
                           minHeight: cardHeight,
-                          maxWidth: double.infinity,
-                          maxHeight: double.infinity,
+                          maxWidth: cardWidth,
+                          maxHeight: cardHeight,
                         ),
                         loadLibrary: widget.loadLibrary(),
                         builder: item.builder,

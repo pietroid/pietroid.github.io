@@ -9,5 +9,5 @@ const loaderColor = Color.value(0xcccbf2);
 
 const cardBorderRadius = 10.0;
 
-const cardWidth = 400.0;
-const cardHeight = 300.0;
+const cardWidth = 360.0;
+const cardHeight = 640.0;

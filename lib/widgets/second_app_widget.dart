@@ -1,83 +1,73 @@
 import 'package:flutter/material.dart';
 
-class SecondAppWidget extends StatefulWidget {
-  const SecondAppWidget();
+class SecondAppWidget extends StatelessWidget {
+  const SecondAppWidget({super.key});
 
-  @override
-  State<SecondAppWidget> createState() => _SecondAppWidgetState();
-}
-
-class _SecondAppWidgetState extends State<SecondAppWidget> with TickerProviderStateMixin {
-  late final AnimationController _fadeController;
-  late final AnimationController _oscillateController;
-  late final AnimationController _fuelController;
-  late final Animation<double> _fadeOpacity;
-  late final Animation<double> _oscillateOffset;
-  late final Animation<double> _glowOpacity;
-  late final Animation<double> _glowScale;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-    _fadeOpacity = CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
-
-    _oscillateController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    )..repeat(reverse: true);
-
-    _fuelController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    )..repeat(reverse: true);
-
-    _oscillateOffset = Tween<double>(begin: -12.0, end: 12.0).animate(
-      CurvedAnimation(parent: _oscillateController, curve: Curves.easeInOut),
-    );
-
-    _glowOpacity = Tween<double>(begin: 0.4, end: 1.0).animate(
-      CurvedAnimation(parent: _fuelController, curve: Curves.easeInOut),
-    );
-
-    _glowScale = Tween<double>(begin: 0.8, end: 1.2).animate(
-      CurvedAnimation(parent: _fuelController, curve: Curves.easeInOut),
-    );
-
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) _fadeController.forward();
-    });
-  }
-
-  @override
-  void dispose() {
-    _fadeController.dispose();
-    _oscillateController.dispose();
-    _fuelController.dispose();
-    super.dispose();
-  }
+  final List<Map<String, String>> _posts = const [
+    {'user': 'Alice', 'content': 'Enjoying the sunny day!'},
+    {'user': 'Bob', 'content': 'Just finished a great book.'},
+    {'user': 'Carol', 'content': 'Check out this view from my hike.'},
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Stack(
-        children: [
-          Container(
-            color: Colors.transparent,
-            width: width,
-            height: height,
-            child: Center(
-              child: Text('Hello'),
-            ),
-          ),
-        ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Connect'),
+          actions: const [
+            IconButton(icon: Icon(Icons.notifications_none), onPressed: null),
+            IconButton(icon: Icon(Icons.message_outlined), onPressed: null),
+          ],
+        ),
+        body: ListView.builder(
+          itemCount: _posts.length,
+          itemBuilder: (context, index) {
+            final post = _posts[index];
+            return Card(
+              margin: const EdgeInsets.all(8),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const CircleAvatar(child: Icon(Icons.person)),
+                        const SizedBox(width: 12),
+                        Text(
+                          post['user']!,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(post['content']!),
+                    const SizedBox(height: 12),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.favorite_border),
+                          onPressed: null,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.comment_outlined),
+                          onPressed: null,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.share_outlined),
+                          onPressed: null,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
