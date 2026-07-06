@@ -92,6 +92,10 @@ void main() {
                   title: 'Latest Posts',
                   links: [
                     SidebarLink(
+                      text: 'Feynman Technique and AI',
+                      href: '${base}posts/feynman_technique_and_ai',
+                    ),
+                    SidebarLink(
                       text: 'Migrating my Blog to Jaspr',
                       href: '${base}posts/jaspr_announcement',
                     ),
