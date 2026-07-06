@@ -9,9 +9,9 @@ Feynman Technique is famously attributed to American Physicist [Richard Feynman]
 
 From that sentence, a [learning technique was born and popularized](https://qr.ae/pFPx46) and it boils down to something like:
 
-1. Write down anything you have about certain theme and try to explain in very simple terms, to a child, for example.
-2. Expose it to someone
-3. Revisit your gaps in explanation and refine
+1. Write down anything you have about certain theme
+2. Explain it to someone, in very simple terms (like they are a child).
+3. Revisit your gaps in explanation and refine your understanding.
 
 It is a powerful learning technique that highlights clear thoughts, simple communication and is said to be very effective for any new knowledge. I’m trying to use it and will let you know how it goes. 
 
