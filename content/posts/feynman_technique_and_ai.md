@@ -25,21 +25,9 @@ Wenever we consult AI models, we are in the role of the child, and the AI is in 
 - It is able to identify gaps based on our simple questions, and adapt to serve we better.
 - For some cases, it learns permanently and adapt based on this.
 
-In summary: if we blindly ask AIs anything, [we are becoming increasingly dumber](https://www.bbc.com/future/article/20260417-ai-chatbots-could-be-making-you-stupider) and the AIs are actually learning and adapting more than us. What set us aside as an “intelligent” beings is the process of learning (that’s the essence of life).
+In summary: if we blindly ask AIs anything, [we are becoming increasingly dumber](https://www.bbc.com/future/article/20260417-ai-chatbots-could-be-making-you-stupider) and the AIs are actually learning and adapting more than us. 
 
-We are missing the process of fixing our mistakes, and by being successful doing it. Is this very self-improvement process and reward that makes us motivated.
-
-<!-- ## The essence of learning: The process of adaptation
-
-I have always hear those two sentences, in oppositon: “what matters is the result” or “What matters is the process”. 
-
-And although I am very fond of processes and the fun of doing things, I have become increasingly frustrated of many things that failed, and now the results become important to me.
-
-However, I can’t just blindly come to the result, like trust an AI to do your job and call it done. It’s wonderful indeed, wouldn't you say, dev, that you are also missing something?
-
-<Image src="images/reddit.png" caption="Lack of motivation is hitting hard."/>
-
-We are missing is the learning, the adaptation, the process of fixing our mistakes, and by being successful doing it. Is this very self-improvement process and reward that makes us motivated. -->
+We are missing the process of doing, fixing our mistakes, knowing why we need to fix, and by being successful doing it. Is this very self-improvement process and reward that makes us motivated.
 
 ## Conclusion: how an AI product could truly help us in the learning process
 
