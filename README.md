@@ -8,11 +8,14 @@ The site also embeds Flutter widgets (the apps grid demo) via [jaspr_flutter_emb
 
 ## Structure
 
-- `/content/posts:` where posts are written in Markdown format.
-- `/content/index.md:` the homepage content.
-- `/lib:` Jaspr application code, including the embedded Flutter apps grid component.
+- `/content/index.md:` the homepage (About me: 2×2 grid with bio, experience & education timeline, projects and blog posts).
+- `/content/projects.md` + `/content/projects/:` the projects page and one page per project.
+- `/content/blog.md` + `/content/posts/:` the blog index and the blog posts in Markdown format.
+- `/lib:` Jaspr application code — the site layout (top app bar), the custom Markdown components (`<HomeGrid/>`, `<ProjectCard/>`, `<BlogIndex/>`) and the embedded Flutter apps grid component.
 - `/web:` static assets and styles.
 - `/assets:` Flutter assets.
+
+See `AGENTS.md` for detailed conventions (how to add posts, projects, experiences, and styling rules).
 
 ## How to use it
 

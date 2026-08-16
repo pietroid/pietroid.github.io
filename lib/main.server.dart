@@ -9,14 +9,16 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
 import 'package:jaspr_content/components/callout.dart';
-import 'package:jaspr_content/components/header.dart';
 import 'package:jaspr_content/components/image.dart';
-import 'package:jaspr_content/components/sidebar.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 import 'package:jaspr_content/theme.dart';
 
 import 'components/apps.dart';
+import 'components/blog_index.dart';
+import 'components/home_grid.dart';
+import 'components/project_card.dart';
 import 'github_pages_base.dart';
+import 'layouts/site_layout.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.server.options.dart';
@@ -52,6 +54,8 @@ void main() {
         script(src: '${base}flutter_bootstrap.js', async: true),
       ],
       body: ContentApp(
+        // Loads all pages eagerly so <BlogIndex/> can list every post on the blog page.
+        eagerlyLoadAllPages: true,
         // Enables mustache templating inside the markdown files.
         templateEngine: MustacheTemplateEngine(),
         parsers: [
@@ -70,44 +74,16 @@ void main() {
           Image(zoom: true),
           // Embeds the Flutter apps grid demo.
           Apps(),
+          // The 2x2 grid of the home page (bio, timeline, projects, blog).
+          HomeGrid(),
+          // The project cards of the projects page.
+          ProjectCard(),
+          // The list of blog posts of the blog page.
+          BlogIndex(base: base),
         ],
         layouts: [
-          // Out-of-the-box layout for documentation sites.
-          DocsLayout(
-            header: Header(
-              title: 'pietroid',
-              logo: '${base}assets/favicon-32x32.png',
-              items: [
-                a(href: 'https://github.com/pietroid/', [
-                  img(src: '${base}assets/github.svg', alt: 'GitHub', width: 24, height: 24),
-                ]),
-                a(href: 'https://br.linkedin.com/in/pietroid/', [
-                  img(src: '${base}assets/linkedin.svg', alt: 'LinkedIn', width: 24, height: 24),
-                ]),
-              ],
-            ),
-            sidebar: Sidebar(
-              groups: [
-                SidebarGroup(
-                  title: 'Latest Posts',
-                  links: [
-                    SidebarLink(
-                      text: 'Feynman Technique and AI',
-                      href: '${base}posts/feynman_technique_and_ai',
-                    ),
-                    SidebarLink(
-                      text: 'Migrating my Blog to Jaspr',
-                      href: '${base}posts/jaspr_announcement',
-                    ),
-                    SidebarLink(
-                      text: 'My Blog with MDX and Github Pages',
-                      href: '${base}posts/creating_my_blog',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          // The site layout with the top app bar (Home, Projects, Blog).
+          SiteLayout(base: base),
         ],
         theme: ContentTheme(
           background: Color('#010B1B'),

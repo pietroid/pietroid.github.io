@@ -1,6 +1,6 @@
 ---
 title: How I created my blog from scratch with Node.js, MDX Remark and Github Pages
-date: 07-03-2025
+date: 2025-03-07
 ---
 
 I already did in the past a [MDX](https://mdxjs.com/) based blog to write about my travel to Egypt (check this [here](https://pietroid.github.io/egypt-travelogue/)). I didn't want to spend too much time, so I made a solution with [Jekyll](https://jekyllrb.com/) + Github pages, [the recommended approach from Github](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll).
