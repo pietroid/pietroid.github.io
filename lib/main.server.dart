@@ -4,21 +4,11 @@
 /// To run code on the client, check the `main.client.dart` file.
 library;
 
-// Server-specific Jaspr import.
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
-import 'package:jaspr_content/components/callout.dart';
-import 'package:jaspr_content/components/image.dart';
-import 'package:jaspr_content/jaspr_content.dart';
-import 'package:jaspr_content/theme.dart';
-
-import 'components/apps.dart';
-import 'components/blog_index.dart';
-import 'components/home_grid.dart';
-import 'components/project_card.dart';
 import 'github_pages_base.dart';
-import 'layouts/site_layout.dart';
+import 'pages/home_page.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.server.options.dart';
@@ -27,14 +17,13 @@ final base = kDebugMode ? '/' : '$githubPagesBase/';
 
 void main() {
   // Initializes the server environment with the generated default options.
-  Jaspr.initializeApp(
-    options: defaultServerOptions,
-  );
+  Jaspr.initializeApp(options: defaultServerOptions);
 
   // Starts the app.
   //
-  // [ContentApp] spins up the content rendering pipeline from jaspr_content to render
-  // your markdown files in the content/ directory to a beautiful documentation site.
+  // The home page ('/') is rendered by [HomePage], a standalone Jaspr
+  // component. Markdown-driven pages are currently disabled while the site
+  // is being rebuilt.
   runApp(
     Document(
       base: base,
@@ -53,65 +42,7 @@ void main() {
         link(rel: 'manifest', href: '${base}assets/site.webmanifest'),
         script(src: '${base}flutter_bootstrap.js', async: true),
       ],
-      body: ContentApp(
-        // Loads all pages eagerly so <BlogIndex/> can list every post on the blog page.
-        eagerlyLoadAllPages: true,
-        // Enables mustache templating inside the markdown files.
-        templateEngine: MustacheTemplateEngine(),
-        parsers: [
-          MarkdownParser(),
-        ],
-        extensions: [
-          // Adds heading anchors to each heading.
-          HeadingAnchorsExtension(),
-          // Generates a table of contents for each page.
-          //TableOfContentsExtension(),
-        ],
-        components: [
-          // The <Info> block and other callouts.
-          Callout(),
-          // Adds zooming and caption support to images.
-          Image(zoom: true),
-          // Embeds the Flutter apps grid demo.
-          Apps(),
-          // The 2x2 grid of the home page (bio, timeline, projects, blog).
-          HomeGrid(),
-          // The project cards of the projects page.
-          ProjectCard(),
-          // The list of blog posts of the blog page.
-          BlogIndex(base: base),
-        ],
-        layouts: [
-          // The site layout with the top app bar (Home, Projects, Blog).
-          SiteLayout(base: base),
-        ],
-        theme: ContentTheme(
-          background: Color('#010B1B'),
-          text: Color('rgb(184, 192, 207)'),
-          font: FontFamily('Geist Mono'),
-          codeFont: FontFamily('Geist Mono'),
-          colors: [
-            ContentColors.headings.apply(Color('#FFFFFF')),
-            ContentColors.links.apply(Color('rgb(7, 171, 200)')),
-            ContentColors.bold.apply(Color('#FFFFFF')),
-            ContentColors.code.apply(Color('#69d8d6')),
-            ContentColors.preCode.apply(Color('#69d8d6')),
-            ContentColors.preBg.apply(Color('#1b2f3e')),
-            ContentColors.quotes.apply(Color('rgb(184, 192, 207)')),
-            ContentColors.quoteBorders.apply(Color('#3e6e7b')),
-            ContentColors.captions.apply(Color('rgb(184, 192, 207)')),
-          ],
-          typography: ContentTypography.base.apply(
-            styles: Styles(
-              textAlign: TextAlign.justify,
-              lineHeight: Unit.em(1.5),
-            ),
-            rules: [
-              css('h1, h2, h3, h4').styles(fontFamily: FontFamily('Onest')),
-            ],
-          ),
-        ),
-      ),
+      body: HomePage(base: base),
     ),
   );
 }

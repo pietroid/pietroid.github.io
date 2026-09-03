@@ -8,7 +8,7 @@ Personal site of Pietro Teruya Domingues (`pietroid`), built with [Jaspr](https:
 
 The site is recruiter/client-facing. It has three main pages with an app bar on top to navigate between them:
 
-- **Home** (`/`) — About me: 2×2 grid with bio (top left), experience & education timeline (top right), projects (bottom left) and blog posts (bottom right).
+- **Home** (`/`) — About me: simple presentation card with avatar, name and subtitle.
 - **Projects** (`/projects`) — project cards; each card links to the project's own page.
 - **Blog** (`/blog`) — list of all posts with dates (auto-generated).
 
@@ -25,26 +25,29 @@ If `jaspr build` fails with "Incompatible options with current running build dae
 
 ## Structure
 
-- `content/` — all site pages in Markdown. The filesystem maps to routes:
-  - `index.md` → `/` (Home)
+- `content/` — markdown pages. The filesystem maps to routes:
   - `projects.md` → `/projects`, `projects/scribe.md` → `/projects/scribe`
   - `blog.md` → `/blog`
   - `posts/<name>.md` → `/posts/<name>` (blog posts)
-- `lib/layouts/site_layout.dart` — `SiteLayout`, the single layout used by all pages: top app bar (brand, Home/Projects/Blog nav with active-state highlighting, GitHub/LinkedIn icons) + centered content card. It renders the page `title` and, when present, the `date` from the frontmatter. Pages may set `hideTitle: true` to keep the h1 screen-reader only, and `wide: true` to use a 64rem content area.
+  - The home page (`/`) is **not** a markdown file; it is rendered by `lib/pages/home_page.dart`.
+- `lib/pages/home_page.dart` — `HomePage`, the standalone Jaspr route for `/`. Renders the shared [SiteHeader] and the [HomeGrid] presentation card full-screen.
+- `lib/layouts/site_layout.dart` — `SiteLayout`, the layout used by all markdown pages: shared [SiteHeader] + centered content card. It renders the page `title` and, when present, the `date` from the frontmatter. Pages may set `wide: true` to use a 64rem content area.
+- `lib/components/site_header.dart` — `SiteHeader`, the shared top app bar (brand, Home/Projects/Blog nav with active-state highlighting, GitHub/LinkedIn icons). Used by both `HomePage` and `SiteLayout`.
 - `lib/components/` — custom components embeddable in Markdown:
-  - `home_grid.dart` — `<HomeGrid/>` with `<HomeBio>`, `<HomeExperience>`, `<HomeProjects>` and `<HomeBlog>` children. Renders the 2×2 home layout (bio, proportional experience timeline, projects, blog).
+  - `home_grid.dart` — `HomeGrid`, a reusable StatelessComponent that composes the presentation components (`PresentationCard`, `Avatar`, `Name`, `Subtitle`, etc.) to render the home screen card from `offline_draft/index.html`. Used by `HomePage`.
   - `project_card.dart` — `<ProjectCard image title description status date href [github]/>`. The whole card navigates to `href` (stretched-link CSS pattern); the GitHub link stays clickable.
   - `blog_index.dart` — `<BlogIndex/>`, lists every page under `/posts/` sorted by `date` desc. Depends on `eagerlyLoadAllPages: true` in `main.server.dart` — do not remove that flag.
   - `apps*.dart`, `lib/widgets/` — embedded Flutter apps grid demo used by the `jaspr_announcement` post (via `jaspr_flutter_embed`).
 - `lib/constants/site_palette.dart` — the site color palette. Always use it instead of hardcoding colors.
+  - `lib/constants/site_styles.dart` — shared colors, font stacks and spacing values used by the presentation components and other reusable UI pieces.
 - `lib/utils/dates.dart` — parsing/formatting of post dates.
-- `web/images/` — static images. `me.svg` is a **placeholder**; replace it with a real photo (or point the `<HomeBio>` `image` to a `.png`).
+- `web/images/` — static images. `photo.png` is used by the home page avatar.
 - `web/styles.css` — global base styles (fonts, body background, element styles). Component/layout styles live in their Jaspr classes as `@css` rules, not here.
 - `product/` — product docs and drafts. `product/drafts/` holds unpublished writing (not routed); `content/` is only for published pages.
 
 ## Conventions (follow these strictly)
 
-1. **Markdown first.** Write pages/content in MD. Only create a custom component when MD can't express it, and embed it in MD as a tag (e.g. `<ProjectCard .../>`).
+1. **Markdown first.** Write pages/content in MD. Only create a custom component when MD can't express it, and embed it in MD as a tag (e.g. `<ProjectCard .../>`). The home page (`/`) is the only exception: it is a standalone Jaspr route.
 2. **Prefer custom Jaspr objects over new Markdown parsers.** Do not add custom MD syntax/parsers; extend via `CustomComponentBase` components or the `SiteLayout`.
 3. **Stick to the existing style.** Reuse the palette in `lib/constants/site_palette.dart` (background `#010B1B`, surface `#0B1224`/`#101A33`, text `rgb(184,192,207)`, headings white Onest, body Geist Mono, links `rgb(7,171,200)`, accent `#69d8d6`, borders `#3e6e7b`). If a new style definition is needed, make it explicit (call it out in the PR/commit message) before creating it, and define it as a `@css` rule in the owning component/layout.
 4. **Post dates** live in the frontmatter as `date: yyyy-MM-dd` and are shown on the post page and in the blog index (formatted like `Mar 7, 2025`). Legacy `dd-MM-yyyy` is still parsed when sorting.
@@ -54,4 +57,3 @@ If `jaspr build` fails with "Incompatible options with current running build dae
 
 - **Add a blog post**: create `content/posts/my_post.md` with `title` + `date` frontmatter. It appears automatically on `/blog` via `<BlogIndex/>`.
 - **Add a project**: add a `<ProjectCard .../>` to `content/projects.md` and create the project page at `content/projects/<name>.md` (use `href="projects/<name>"` in the card).
-- **Add an experience/education entry**: add a `<TimelineItem role="..." place="..." start="yyyy-MM" end="yyyy-MM|present" [link="..."]/>` inside `<HomeExperience>` in `content/index.md`.
