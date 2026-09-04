@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../../constants/site_styles.dart';
 import '../column.dart';
 import '../row.dart';
 import 'project_context.dart';
@@ -18,6 +19,7 @@ class ProjectItemData {
     required this.contextColor,
     required this.status,
     required this.statusColor,
+    required this.date,
     this.techIcons = const [],
   });
 
@@ -28,6 +30,7 @@ class ProjectItemData {
   final ProjectContextColor contextColor;
   final String status;
   final ProjectStatusColor statusColor;
+  final String date;
   final List<String> techIcons;
 }
 
@@ -68,6 +71,10 @@ class ProjectItem extends StatelessComponent {
                   status: data.status,
                   color: data.statusColor,
                 ),
+                span(
+                  classes: 'projects-date',
+                  [Component.text(data.date)],
+                ),
               ],
             ),
           ],
@@ -79,6 +86,7 @@ class ProjectItem extends StatelessComponent {
   @css
   static List<StyleRule> get styles => [
     css('.projects-item').styles(
+      width: 100.percent,
       boxSizing: BoxSizing.borderBox,
     ),
     css('.projects-info').styles(
@@ -87,6 +95,13 @@ class ProjectItem extends StatelessComponent {
     ),
     css('.projects-info p').styles(
       textAlign: TextAlign.start,
+    ),
+    css('.projects-date').styles(
+      fontFamily: SiteDraftFonts.ibmPlexMonoStack,
+      fontSize: 12.px,
+      fontWeight: FontWeight.w400,
+      color: SiteDraftColors.subtitleGray,
+      lineHeight: 1.4.em,
     ),
   ];
 }

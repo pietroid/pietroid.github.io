@@ -5,6 +5,7 @@
 // Generated with jaspr_builder
 
 import 'package:jaspr/server.dart';
+import 'package:pietroid_github_io/components/bio/bio.dart' as _bio;
 import 'package:pietroid_github_io/components/experience/experience_item.dart'
     as _experience_item;
 import 'package:pietroid_github_io/components/experience/experience_list.dart'
@@ -23,7 +24,6 @@ import 'package:pietroid_github_io/components/projects/project_tech_icons.dart'
     as _project_tech_icons;
 import 'package:pietroid_github_io/components/projects/projects_list.dart'
     as _projects_list;
-import 'package:pietroid_github_io/components/bio.dart' as _bio;
 import 'package:pietroid_github_io/components/site_header.dart' as _site_header;
 import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
 
@@ -46,8 +46,8 @@ import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
 ServerOptions get defaultServerOptions => ServerOptions(
   clientId: 'main.client.dart.js',
   styles: () => [
-    ..._bio.Bio.styles,
     ..._site_header.SiteHeader.styles,
+    ..._bio.Bio.styles,
     ..._experience_item.ExperienceItem.styles,
     ..._experience_list.ExperienceList.styles,
     ..._experience_timeline.ExperienceTimeline.styles,

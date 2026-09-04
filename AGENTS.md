@@ -37,12 +37,14 @@ pkill -f build_daemon; pkill -f jaspr
 - `lib/components/experience/` — `ExperienceSection` and its sub-components.
 - `lib/components/projects/` — `ProjectsSection` and its sub-components.
 - `lib/components/column.dart` / `lib/components/row.dart` — generic flex containers used by the sections.
+- `lib/data/projects_loader.dart` — reads `content/_data/projects.yaml` and maps entries to `ProjectItemData` at build time.
 - `lib/constants/site_styles.dart` — shared colors, font stacks, text sizes and spacing values. Always use these instead of hardcoding values.
 - `lib/github_pages_base.dart` — base path for GitHub Pages. Empty for user/organization sites.
-- `content/` — markdown pages. The filesystem maps to routes:
+- `content/` — markdown pages and build-time data. The filesystem maps markdown to routes:
   - `projects.md` → `/projects`, `projects/scribe.md` → `/projects/scribe`
   - `blog.md` → `/blog`
   - `posts/<name>.md` → `/posts/<name>` (blog posts)
+- `content/_data/projects.yaml` — project entries consumed by the home page projects section.
 - `web/images/` — static images. `bio_avatar.png` is used by the home page avatar.
 - `web/assets/` — static assets, including `github.svg` and `linkedin.svg` used by [SiteHeader].
 - `web/styles.css` — global base styles (fonts, body background, element styles). Component/layout styles live in their Jaspr classes as `@css` rules, not here.
@@ -61,4 +63,5 @@ pkill -f build_daemon; pkill -f jaspr
 - **Update the home page sections**: edit the relevant component in `lib/components/` and ensure it is composed in `lib/pages/home_page.dart`.
 - **Change site-wide colors/fonts/spacing**: edit `lib/constants/site_styles.dart`.
 - **Add a blog post** (when markdown pages are re-enabled): create `content/posts/my_post.md` with at least `title:` and `date:` frontmatter.
-- **Add a project** (when markdown pages are re-enabled): add a project entry in `content/projects.md` and create the project page at `content/projects/<name>.md`.
+- **Add a project**: add an entry to `content/_data/projects.yaml` with `image`, `title`, `description`, `context`, `status` and `date`.
+- **Add a project page** (when markdown pages are re-enabled): create the project page at `content/projects/<name>.md`.

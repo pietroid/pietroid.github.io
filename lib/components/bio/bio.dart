@@ -1,8 +1,8 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
-import '../components/column.dart';
-import '../constants/site_styles.dart';
+import '../column.dart';
+import '../../constants/site_styles.dart';
 
 /// The home page bio section.
 ///
@@ -37,7 +37,7 @@ class Bio extends StatelessComponent {
     css('.bio').styles(
       width: 100.percent,
       maxWidth: 44.5625.rem,
-      padding: Padding.only(top: 8.125.rem, bottom: 2.rem),
+      padding: Padding.only(top: 3.rem, bottom: 6.rem),
       boxSizing: BoxSizing.borderBox,
     ),
     css('.bio-avatar').styles(

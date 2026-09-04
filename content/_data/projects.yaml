@@ -1,0 +1,69 @@
+projects:
+  - image: images/projects/scribe.png
+    title: Scribe
+    description: An AI-Powered App to help people study any subject - based on Feynman technique.
+    context: personal
+    status: wip
+    date: 2026
+  - image: images/projects/pythontots.png
+    title: Python to Typescript Backend Migration
+    description: Migration of over 20 endpoints proved that we could ship new features faster and more reliably than before.
+    context: freelancing
+    status: done
+    date: 2026
+  - image: images/projects/deliverytime.png
+    title: Delivery Time Optimization
+    description: Dropping the delivery cycle of a startup product from 3 months to 3 weeks.
+    context: freelancing
+    status: done
+    date: 2026
+  - image: images/projects/startuptracing.png
+    title: App Launch Time Analysis
+    description: Launch time is a critical user metric for a big banking application. I conducted the analysis on both Android and Flutter Layer.
+    context: very good ventures
+    status: done
+    date: 2025
+  - image: images/projects/sduihome.png
+    title: Server-Driven UI for Home
+    description: Established the foundations for server-driven UI experience on the frontend.
+    context: quintoandar
+    status: done
+    date: 2024
+  - image: images/projects/mapoverhaul.png
+    title: Map Search Revamp
+    description: Total revamp of the map search feature, including map interaction, UI, animations and geographical search data handling. 
+    context: quintoandar
+    status: done
+    date: 2023
+  - image: images/projects/internalchat.png
+    title: Internal Chat
+    description: Replacing generic WhatsApp for support with an internal chat system inside the App.
+    context: quintoandar
+    status: done
+    date: 2022
+  # - image: images/project.png
+  #   title: Coupons and Offers
+  #   description: Maintained and released new features for the coupons and offers section of the application, maintaining both BFF and Mobile App.
+  #   context: raiadrogasil
+  #   status: done
+  #   date: 2021
+  # - image: images/project.png
+  #   title: Loyalty Product
+  #   description: Launched with the team a new loyalty product in the market in 8 months.
+  #   context: raiadrogasil
+  #   status: done
+  #   date: 2020
+  - image: images/projects/psiquiatria.png
+    title: Psiquiatria Paulista App
+    description: Launched the Psiquiatria Paulista App, providing a comprehensive platform for mental health services.
+    context: indigo labs
+    status: done
+    date: 2019
+  - image: images/projects/enduroids.png
+    title: Enduroids
+    description: My first game I have ever published at 13 years old.
+    context: personal
+    status: done
+    date: 2009
+
+

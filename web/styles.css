@@ -105,7 +105,7 @@ body {
 p {
     margin: 0;
     max-width: 18rem;
-    color: #a5a5a5;
+    color: #797979;
     text-align: center;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 14px;
@@ -154,7 +154,7 @@ h3 {
     color: #c9c9c9;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.25em;
 }
 
