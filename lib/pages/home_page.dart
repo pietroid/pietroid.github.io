@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
 import '../components/bio/bio.dart';
+import '../components/blog/last_posts_section.dart';
 import '../components/experience/experience_section.dart';
 import '../components/projects/projects_section.dart';
 import '../components/site_header.dart';
@@ -31,6 +32,7 @@ class HomePage extends StatelessComponent {
         const Bio(),
         const ExperienceSection(),
         ProjectsSection(),
+        LastPostsSection(),
       ]),
     ]);
   }

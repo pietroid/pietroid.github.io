@@ -28,16 +28,6 @@ class SiteHeader extends StatelessComponent {
           children: [
             a(
               classes: 'site-header-link',
-              href: '${base}',
-              [Component.text('About me')],
-            ),
-            a(
-              classes: 'site-header-link',
-              href: '${base}projects',
-              [Component.text('Projects')],
-            ),
-            a(
-              classes: 'site-header-link',
               href: '${base}blog',
               [Component.text('Blog')],
             ),

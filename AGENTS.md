@@ -11,8 +11,9 @@ The site is recruiter/client-facing. The home page (`/`) is a single long-form p
 - **About me** — avatar, name and subtitle.
 - **Experience** — timeline of roles.
 - **Projects** — project cards.
+- **Last posts** — links to every blog post under `content/posts/`.
 
-Markdown-driven pages (`/projects`, `/blog`, `/posts/*`) exist under `content/` but are currently disabled while the site is being rebuilt; only `/` is rendered.
+The blog is now rendered from markdown: `/blog` lists all posts and `/posts/<name>` renders the individual post. `/projects/*` pages still exist under `content/` but are not linked from the header.
 
 ## Commands
 
@@ -31,13 +32,17 @@ pkill -f build_daemon; pkill -f jaspr
 
 ## Structure
 
-- `lib/pages/home_page.dart` — `HomePage`, the standalone Jaspr route for `/`. Renders [SiteHeader], [Bio], [ExperienceSection] and [ProjectsSection].
-- `lib/components/site_header.dart` — `SiteHeader`, the shared top app bar (About me, Projects, Blog nav; GitHub and LinkedIn icons). Accepts a `base` path so it can be reused on every page.
+- `lib/pages/home_page.dart` — `HomePage`, the standalone Jaspr route for `/`. Renders [SiteHeader], [Bio], [ExperienceSection], [ProjectsSection] and [LastPostsSection].
+- `lib/components/site_header.dart` — `SiteHeader`, the shared top app bar (Blog nav; GitHub and LinkedIn icons). Accepts a `base` path so it can be reused on every page.
 - `lib/components/bio.dart` — `Bio`, the about-me card (avatar, name, subtitle).
 - `lib/components/experience/` — `ExperienceSection` and its sub-components.
 - `lib/components/projects/` — `ProjectsSection` and its sub-components.
 - `lib/components/column.dart` / `lib/components/row.dart` — generic flex containers used by the sections.
 - `lib/data/projects_loader.dart` — reads `content/_data/projects.yaml` and maps entries to `ProjectItemData` at build time.
+- `lib/data/posts_loader.dart` — reads `content/posts/*.md` and maps frontmatter to `PostItemData` at build time.
+- `lib/components/blog/` — `LastPostsSection`, `BlogIndex`, `BlogPostsList` and `BlogPostItem`.
+- `lib/layouts/site_layout.dart` — `SiteLayout`, the shared layout for markdown-driven pages (`/blog`, `/posts/*`).
+- `lib/extensions/demote_headings_extension.dart` — shifts markdown headings down one level so the frontmatter title is the only `<h1>`.
 - `lib/constants/site_styles.dart` — shared colors, font stacks, text sizes and spacing values. Always use these instead of hardcoding values.
 - `lib/github_pages_base.dart` — base path for GitHub Pages. Empty for user/organization sites.
 - `content/` — markdown pages and build-time data. The filesystem maps markdown to routes:
@@ -62,6 +67,6 @@ pkill -f build_daemon; pkill -f jaspr
 - **Update the header**: edit `lib/components/site_header.dart`.
 - **Update the home page sections**: edit the relevant component in `lib/components/` and ensure it is composed in `lib/pages/home_page.dart`.
 - **Change site-wide colors/fonts/spacing**: edit `lib/constants/site_styles.dart`.
-- **Add a blog post** (when markdown pages are re-enabled): create `content/posts/my_post.md` with at least `title:` and `date:` frontmatter.
+- **Add a blog post**: create `content/posts/my_post.md` with at least `title:` and `date:` frontmatter.
 - **Add a project**: add an entry to `content/_data/projects.yaml` with `image`, `title`, `description`, `context`, `status` and `date`.
 - **Add a project page** (when markdown pages are re-enabled): create the project page at `content/projects/<name>.md`.

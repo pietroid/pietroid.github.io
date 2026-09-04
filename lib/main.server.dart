@@ -6,8 +6,14 @@ library;
 
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
+import 'package:jaspr_content/jaspr_content.dart';
+import 'package:jaspr_content/theme.dart';
+import 'package:jaspr_router/jaspr_router.dart';
 
+import 'components/blog/blog_index.dart';
+import 'extensions/demote_headings_extension.dart';
 import 'github_pages_base.dart';
+import 'layouts/site_layout.dart';
 import 'pages/home_page.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
@@ -21,9 +27,9 @@ void main() {
 
   // Starts the app.
   //
-  // The home page ('/') is rendered by [HomePage], a standalone Jaspr
-  // component. Markdown-driven pages are currently disabled while the site
-  // is being rebuilt.
+  // The home page ('/') is rendered by [HomePage]. Markdown-driven pages under
+  // `content/` (blog, posts) are loaded by [ContentApp] and wrapped with the
+  // shared [SiteLayout].
   runApp(
     Document(
       base: base,
@@ -42,7 +48,29 @@ void main() {
         link(rel: 'manifest', href: '${base}assets/site.webmanifest'),
         script(src: '${base}flutter_bootstrap.js', async: true),
       ],
-      body: HomePage(base: base),
+      body: ContentApp.custom(
+        loaders: [FilesystemLoader('content', filterExtensions: {'.md'})],
+        configResolver: (_) => PageConfig(
+          enableFrontmatter: true,
+          dataLoaders: [FilesystemDataLoader('content/_data')],
+          parsers: [MarkdownParser()],
+          extensions: [DemoteHeadingsExtension()],
+          components: [
+            CustomComponent(
+              pattern: RegExp(r'^BlogIndex$'),
+              builder: (name, attributes, child) => const BlogIndex(),
+            ),
+          ],
+          layouts: [SiteLayout(base: base)],
+          theme: ContentTheme.none(),
+        ),
+        routerBuilder: (routes) => Router(
+          routes: [
+            Route(path: '/', builder: (_, __) => HomePage(base: base)),
+            for (final route in routes) ...route,
+          ],
+        ),
+      ),
     ),
   );
 }

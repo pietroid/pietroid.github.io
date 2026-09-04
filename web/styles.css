@@ -186,3 +186,75 @@ blockquote {
     margin-left: 0.5em;
     color: rgb(184, 192, 207);
 }
+
+/* Markdown-driven pages (blog, posts) reuse the home page typography. */
+.site-main .post-header {
+    margin-bottom: 2rem;
+}
+
+.site-main .content h1 {
+    margin: 0 0 1rem 0;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 32.44px;
+    font-weight: 600;
+    line-height: 1.26em;
+}
+
+.site-main .content h2 {
+    margin: 3rem 0 1.5rem 0;
+    color: #ffffff;
+    font-family: 'Onest', sans-serif;
+    font-size: 1.6em;
+}
+
+.site-main .content h3 {
+    margin: 2rem 0 1rem 0;
+    color: #c9c9c9;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.25em;
+}
+
+.site-main .content p {
+    max-width: none;
+    margin: 0 0 16px 0;
+    color: #797979;
+    text-align: start;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.57em;
+    letter-spacing: -0.03em;
+}
+
+.site-main .content a {
+    color: rgb(7, 171, 200);
+}
+
+.site-main .content li {
+    color: #797979;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.57em;
+}
+
+.site-main .content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.site-main .content pre {
+    padding: 1.5em;
+    border-radius: 8px;
+    background-color: #1b2f3e;
+    overflow-x: auto;
+}
+
+.site-main .content code {
+    font-size: 0.9em;
+    color: #69d8d6;
+    white-space: pre-wrap;
+}

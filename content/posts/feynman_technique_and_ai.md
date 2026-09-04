@@ -1,6 +1,6 @@
 ---
 title: What is the Feynman technique - And why it is the opposite of building with AI
-date: 2025-03-07
+date: 2026-07-05
 ---
 
 Feynman Technique is famously attributed to American Physicist [Richard Feynman](https://pt.wikipedia.org/wiki/Richard_Feynman). He’s known by a quote “**if you cannot explain a concept in simple language, you do not understand it**”. 

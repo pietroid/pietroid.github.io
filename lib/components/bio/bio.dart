@@ -24,7 +24,7 @@ class Bio extends StatelessComponent {
           h1([Component.text('Pietro Teruya')]),
           p([
             Component.text(
-              'Software Engineer, building Mobile Experiences for the past 7 years.',
+              'Senior Software Engineer, building Mobile Experiences for the past 7 years.',
             ),
           ]),
         ],

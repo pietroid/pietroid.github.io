@@ -1,6 +1,6 @@
 ---
 title: "I migrated my Blog publishing tool to a Dart Web Framework - here's Why"
-date: 2025-03-07
+date: 2026-06-30
 ---
 
 Welcome back! My first ever post in this blog was how [I created my own blogging tool](posts/creating_my_blog) from scracth with JS, a MDX parser, and how I used Github pages to publish it.

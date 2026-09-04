@@ -6,6 +6,10 @@
 
 import 'package:jaspr/server.dart';
 import 'package:pietroid_github_io/components/bio/bio.dart' as _bio;
+import 'package:pietroid_github_io/components/blog/blog_post_item.dart'
+    as _blog_post_item;
+import 'package:pietroid_github_io/components/blog/blog_posts_list.dart'
+    as _blog_posts_list;
 import 'package:pietroid_github_io/components/experience/experience_item.dart'
     as _experience_item;
 import 'package:pietroid_github_io/components/experience/experience_list.dart'
@@ -25,6 +29,7 @@ import 'package:pietroid_github_io/components/projects/project_tech_icons.dart'
 import 'package:pietroid_github_io/components/projects/projects_list.dart'
     as _projects_list;
 import 'package:pietroid_github_io/components/site_header.dart' as _site_header;
+import 'package:pietroid_github_io/layouts/site_layout.dart' as _site_layout;
 import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
 
 /// Default [ServerOptions] for use with your Jaspr project.
@@ -48,6 +53,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
   styles: () => [
     ..._site_header.SiteHeader.styles,
     ..._bio.Bio.styles,
+    ..._blog_post_item.BlogPostItem.styles,
+    ..._blog_posts_list.BlogPostsList.styles,
     ..._experience_item.ExperienceItem.styles,
     ..._experience_list.ExperienceList.styles,
     ..._experience_timeline.ExperienceTimeline.styles,
@@ -57,6 +64,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_status.ProjectStatus.styles,
     ..._project_tech_icons.ProjectTechIcons.styles,
     ..._projects_list.ProjectsList.styles,
+    ..._site_layout.SiteLayout.styles,
     ..._home_page.HomePage.styles,
   ],
 );
