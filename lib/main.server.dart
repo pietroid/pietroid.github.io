@@ -4,19 +4,17 @@
 /// To run code on the client, check the `main.client.dart` file.
 library;
 
-// Server-specific Jaspr import.
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
-
-import 'package:jaspr_content/components/callout.dart';
-import 'package:jaspr_content/components/header.dart';
-import 'package:jaspr_content/components/image.dart';
-import 'package:jaspr_content/components/sidebar.dart';
 import 'package:jaspr_content/jaspr_content.dart';
 import 'package:jaspr_content/theme.dart';
+import 'package:jaspr_router/jaspr_router.dart';
 
-import 'components/apps.dart';
+import 'components/blog/blog_index.dart';
+import 'extensions/demote_headings_extension.dart';
 import 'github_pages_base.dart';
+import 'layouts/site_layout.dart';
+import 'pages/home_page.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.server.options.dart';
@@ -25,14 +23,13 @@ final base = kDebugMode ? '/' : '$githubPagesBase/';
 
 void main() {
   // Initializes the server environment with the generated default options.
-  Jaspr.initializeApp(
-    options: defaultServerOptions,
-  );
+  Jaspr.initializeApp(options: defaultServerOptions);
 
   // Starts the app.
   //
-  // [ContentApp] spins up the content rendering pipeline from jaspr_content to render
-  // your markdown files in the content/ directory to a beautiful documentation site.
+  // The home page ('/') is rendered by [HomePage]. Markdown-driven pages under
+  // `content/` (blog, posts) are loaded by [ContentApp] and wrapped with the
+  // shared [SiteLayout].
   runApp(
     Document(
       base: base,
@@ -51,89 +48,27 @@ void main() {
         link(rel: 'manifest', href: '${base}assets/site.webmanifest'),
         script(src: '${base}flutter_bootstrap.js', async: true),
       ],
-      body: ContentApp(
-        // Enables mustache templating inside the markdown files.
-        templateEngine: MustacheTemplateEngine(),
-        parsers: [
-          MarkdownParser(),
-        ],
-        extensions: [
-          // Adds heading anchors to each heading.
-          HeadingAnchorsExtension(),
-          // Generates a table of contents for each page.
-          //TableOfContentsExtension(),
-        ],
-        components: [
-          // The <Info> block and other callouts.
-          Callout(),
-          // Adds zooming and caption support to images.
-          Image(zoom: true),
-          // Embeds the Flutter apps grid demo.
-          Apps(),
-        ],
-        layouts: [
-          // Out-of-the-box layout for documentation sites.
-          DocsLayout(
-            header: Header(
-              title: 'pietroid',
-              logo: '${base}assets/favicon-32x32.png',
-              items: [
-                a(href: 'https://github.com/pietroid/', [
-                  img(src: '${base}assets/github.svg', alt: 'GitHub', width: 24, height: 24),
-                ]),
-                a(href: 'https://br.linkedin.com/in/pietroid/', [
-                  img(src: '${base}assets/linkedin.svg', alt: 'LinkedIn', width: 24, height: 24),
-                ]),
-              ],
+      body: ContentApp.custom(
+        loaders: [FilesystemLoader('content', filterExtensions: {'.md'})],
+        configResolver: (_) => PageConfig(
+          enableFrontmatter: true,
+          dataLoaders: [FilesystemDataLoader('content/_data')],
+          parsers: [MarkdownParser()],
+          extensions: [DemoteHeadingsExtension()],
+          components: [
+            CustomComponent(
+              pattern: RegExp(r'^BlogIndex$'),
+              builder: (name, attributes, child) => const BlogIndex(),
             ),
-            sidebar: Sidebar(
-              groups: [
-                SidebarGroup(
-                  title: 'Latest Posts',
-                  links: [
-                    SidebarLink(
-                      text: 'Feynman Technique and AI',
-                      href: '${base}posts/feynman_technique_and_ai',
-                    ),
-                    SidebarLink(
-                      text: 'Migrating my Blog to Jaspr',
-                      href: '${base}posts/jaspr_announcement',
-                    ),
-                    SidebarLink(
-                      text: 'My Blog with MDX and Github Pages',
-                      href: '${base}posts/creating_my_blog',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-        theme: ContentTheme(
-          background: Color('#010B1B'),
-          text: Color('rgb(184, 192, 207)'),
-          font: FontFamily('Geist Mono'),
-          codeFont: FontFamily('Geist Mono'),
-          colors: [
-            ContentColors.headings.apply(Color('#FFFFFF')),
-            ContentColors.links.apply(Color('rgb(7, 171, 200)')),
-            ContentColors.bold.apply(Color('#FFFFFF')),
-            ContentColors.code.apply(Color('#69d8d6')),
-            ContentColors.preCode.apply(Color('#69d8d6')),
-            ContentColors.preBg.apply(Color('#1b2f3e')),
-            ContentColors.quotes.apply(Color('rgb(184, 192, 207)')),
-            ContentColors.quoteBorders.apply(Color('#3e6e7b')),
-            ContentColors.captions.apply(Color('rgb(184, 192, 207)')),
           ],
-          typography: ContentTypography.base.apply(
-            styles: Styles(
-              textAlign: TextAlign.justify,
-              lineHeight: Unit.em(1.5),
-            ),
-            rules: [
-              css('h1, h2, h3, h4').styles(fontFamily: FontFamily('Onest')),
-            ],
-          ),
+          layouts: [SiteLayout(base: base)],
+          theme: ContentTheme.none(),
+        ),
+        routerBuilder: (routes) => Router(
+          routes: [
+            Route(path: '/', builder: (_, __) => HomePage(base: base)),
+            for (final route in routes) ...route,
+          ],
         ),
       ),
     ),
