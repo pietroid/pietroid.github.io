@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Onest&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&display=swap');
 
 html,
@@ -102,20 +102,65 @@ body {
     word-wrap: break-word;
 }
 
-p,
+p {
+    margin: 0;
+    max-width: 18rem;
+    color: #a5a5a5;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.57em;
+    letter-spacing: -0.03em;
+}
+
 li {
     color: rgb(184, 192, 207);
 }
 
 h1 {
-    font-family: 'Onest', sans-serif;
+    margin: 0;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 32.44px;
+    font-weight: 600;
+    line-height: 1.26em;
+}
+
+.markdown-body h1 {
     margin-top: 50px;
+    font-family: 'Onest', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.markdown-body p {
+    max-width: none;
+    margin: 0 0 16px 0;
+    color: rgb(184, 192, 207);
+    text-align: justify;
+    font-family: "Geist Mono", sans-serif;
+    letter-spacing: normal;
 }
 
 h2 {
     font-family: 'Onest', sans-serif;
     margin-top: 30px;
     font-size: 1.6em;
+}
+
+h3 {
+    margin: 0;
+    color: #c9c9c9;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.25em;
+}
+
+.markdown-body h3 {
+    color: #ffffff;
+    font-family: 'Onest', sans-serif;
 }
 
 a {

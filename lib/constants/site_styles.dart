@@ -46,10 +46,26 @@ class SiteDraftFonts {
   ]);
 }
 
+/// Shared text sizing from the offline draft style guidelines.
+class SiteDraftTextStyles {
+  static final display = 32.44.px;
+  static final heading = 28.83.px;
+  static final body = 14.px;
+  static final nav = 14.px;
+  static final caption = 12.px;
+}
+
+/// Shared element sizing from the offline draft style guidelines.
+class SiteDraftElementSizes {
+  static final avatar = 8.9375.rem;
+  static final socialIcon = 1.6875.rem;
+}
+
 /// Shared spacing values from the offline draft style guidelines.
 class SiteDraftSpacings {
   static final bodyPadding = 2.rem;
   static final cardGap = 1.rem;
   static final infoMarginLeft = 2.rem;
   static final infoGap = 0.5.rem;
+  static final socialGap = 0.875.rem;
 }
