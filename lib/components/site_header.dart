@@ -6,14 +6,17 @@ import '../constants/site_styles.dart';
 
 /// The shared site header.
 ///
-/// Shows the main navigation links (About me, Projects, Blog) and social
-/// icon links (GitHub, LinkedIn). It is used by the home page and intended
-/// to be reused by every page once markdown-driven routing is re-enabled.
+/// On the home page it shows only the `Blog` navigation link plus the social
+/// icon links (GitHub, LinkedIn). On every other page it also shows a `Home`
+/// link that returns to the site root.
 class SiteHeader extends StatelessComponent {
-  const SiteHeader({super.key, required this.base});
+  const SiteHeader({super.key, required this.base, this.isHome = false});
 
   /// The base path the site is served from ('/' for user GitHub Pages sites).
   final String base;
+
+  /// Whether this header is rendered on the home page.
+  final bool isHome;
 
   static const _githubUrl = 'https://github.com/pietroid';
   static const _linkedinUrl = 'https://www.linkedin.com/in/pietroid/';
@@ -26,6 +29,12 @@ class SiteHeader extends StatelessComponent {
           align: AlignItems.center,
           gap: Gap.all(2.rem),
           children: [
+            if (!isHome)
+              a(
+                classes: 'site-header-link',
+                href: base,
+                [Component.text('Home')],
+              ),
             a(
               classes: 'site-header-link',
               href: '${base}blog',
@@ -61,19 +70,16 @@ class SiteHeader extends StatelessComponent {
       width: 100.percent,
       display: Display.flex,
       justifyContent: JustifyContent.center,
-      padding: Padding.symmetric(
-        vertical: 1.5.rem,
-        horizontal: SiteDraftSpacings.bodyPadding,
-      ),
+      padding: Padding.symmetric(vertical: 1.5.rem),
       boxSizing: BoxSizing.borderBox,
     ),
     css('.site-header-inner').styles(
       width: 100.percent,
-      maxWidth: 44.5625.rem,
       display: Display.flex,
       flexDirection: FlexDirection.row,
       justifyContent: JustifyContent.spaceBetween,
       alignItems: AlignItems.center,
+      padding: Padding.symmetric(horizontal: SiteDraftSpacings.bodyPadding),
       boxSizing: BoxSizing.borderBox,
     ),
     css('.site-header-link').styles(
@@ -102,12 +108,12 @@ class SiteHeader extends StatelessComponent {
       opacity: 0.7,
     ),
     css.media(MediaQuery.all(maxWidth: 700.px), [
-      css('.site-header').styles(
-        padding: Padding.all(SiteDraftSpacings.bodyPadding),
-      ),
       css('.site-header-inner').styles(
         flexDirection: FlexDirection.column,
         gap: Gap.all(1.rem),
+        padding: Padding.symmetric(
+          horizontal: SiteDraftSpacings.bodyPaddingMobile,
+        ),
       ),
     ]),
   ];

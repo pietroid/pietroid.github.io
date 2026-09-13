@@ -6,14 +6,23 @@
 
 import 'package:jaspr/server.dart';
 import 'package:pietroid_github_io/components/bio/bio.dart' as _bio;
+import 'package:pietroid_github_io/components/bio/bio_stack.dart' as _bio_stack;
 import 'package:pietroid_github_io/components/blog/blog_post_item.dart'
     as _blog_post_item;
 import 'package:pietroid_github_io/components/blog/blog_posts_list.dart'
     as _blog_posts_list;
+import 'package:pietroid_github_io/components/blog/last_posts_section.dart'
+    as _last_posts_section;
+import 'package:pietroid_github_io/components/education/education_item.dart'
+    as _education_item;
+import 'package:pietroid_github_io/components/education/education_section.dart'
+    as _education_section;
 import 'package:pietroid_github_io/components/experience/experience_item.dart'
     as _experience_item;
 import 'package:pietroid_github_io/components/experience/experience_list.dart'
     as _experience_list;
+import 'package:pietroid_github_io/components/experience/experience_section.dart'
+    as _experience_section;
 import 'package:pietroid_github_io/components/experience/experience_timeline.dart'
     as _experience_timeline;
 import 'package:pietroid_github_io/components/projects/project_context.dart'
@@ -28,6 +37,8 @@ import 'package:pietroid_github_io/components/projects/project_tech_icons.dart'
     as _project_tech_icons;
 import 'package:pietroid_github_io/components/projects/projects_list.dart'
     as _projects_list;
+import 'package:pietroid_github_io/components/projects/projects_section.dart'
+    as _projects_section;
 import 'package:pietroid_github_io/components/site_header.dart' as _site_header;
 import 'package:pietroid_github_io/layouts/site_layout.dart' as _site_layout;
 import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
@@ -53,10 +64,15 @@ ServerOptions get defaultServerOptions => ServerOptions(
   styles: () => [
     ..._site_header.SiteHeader.styles,
     ..._bio.Bio.styles,
+    ..._bio_stack.BioStack.styles,
     ..._blog_post_item.BlogPostItem.styles,
     ..._blog_posts_list.BlogPostsList.styles,
+    ..._last_posts_section.LastPostsSection.styles,
+    ..._education_item.EducationItem.styles,
+    ..._education_section.EducationSection.styles,
     ..._experience_item.ExperienceItem.styles,
     ..._experience_list.ExperienceList.styles,
+    ..._experience_section.ExperienceSection.styles,
     ..._experience_timeline.ExperienceTimeline.styles,
     ..._project_context.ProjectContext.styles,
     ..._project_image.ProjectImage.styles,
@@ -64,6 +80,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_status.ProjectStatus.styles,
     ..._project_tech_icons.ProjectTechIcons.styles,
     ..._projects_list.ProjectsList.styles,
+    ..._projects_section.ProjectsSection.styles,
     ..._site_layout.SiteLayout.styles,
     ..._home_page.HomePage.styles,
   ],

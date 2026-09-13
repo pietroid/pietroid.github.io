@@ -64,6 +64,7 @@ class SiteDraftElementSizes {
 /// Shared spacing values from the offline draft style guidelines.
 class SiteDraftSpacings {
   static final bodyPadding = 2.rem;
+  static final bodyPaddingMobile = 1.rem;
   static final cardGap = 1.rem;
   static final infoMarginLeft = 2.rem;
   static final infoGap = 0.5.rem;

@@ -3,6 +3,7 @@ import 'package:jaspr/server.dart';
 
 import '../components/bio/bio.dart';
 import '../components/blog/last_posts_section.dart';
+import '../components/education/education_section.dart';
 import '../components/experience/experience_section.dart';
 import '../components/projects/projects_section.dart';
 import '../components/site_header.dart';
@@ -28,9 +29,10 @@ class HomePage extends StatelessComponent {
         },
       ),
       div(classes: 'home-page', [
-        SiteHeader(base: base),
+        SiteHeader(base: base, isHome: true),
         const Bio(),
         const ExperienceSection(),
+        const EducationSection(),
         ProjectsSection(),
         LastPostsSection(),
       ]),

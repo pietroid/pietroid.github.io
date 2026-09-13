@@ -33,9 +33,11 @@ pkill -f build_daemon; pkill -f jaspr
 ## Structure
 
 - `lib/pages/home_page.dart` — `HomePage`, the standalone Jaspr route for `/`. Renders [SiteHeader], [Bio], [ExperienceSection], [ProjectsSection] and [LastPostsSection].
-- `lib/components/site_header.dart` — `SiteHeader`, the shared top app bar (Blog nav; GitHub and LinkedIn icons). Accepts a `base` path so it can be reused on every page.
-- `lib/components/bio.dart` — `Bio`, the about-me card (avatar, name, subtitle).
+- `lib/components/site_header.dart` — `SiteHeader`, the shared top app bar. On the home page it shows the `Blog` link and GitHub/LinkedIn icons; on every other page it also shows a `Home` link. Accepts `base` and `isHome` so it can be reused on every page.
+- `lib/components/bio/bio.dart` — `Bio`, the about-me card (avatar, name, subtitle and stack icons).
+- `lib/components/bio/bio_stack.dart` — `BioStack`, the icon + label row below the bio subtitle.
 - `lib/components/experience/` — `ExperienceSection` and its sub-components.
+- `lib/components/education/` — `EducationSection` and its sub-components (Certifications & Education).
 - `lib/components/projects/` — `ProjectsSection` and its sub-components.
 - `lib/components/column.dart` / `lib/components/row.dart` — generic flex containers used by the sections.
 - `lib/data/projects_loader.dart` — reads `content/_data/projects.yaml` and maps entries to `ProjectItemData` at build time.
@@ -68,5 +70,5 @@ pkill -f build_daemon; pkill -f jaspr
 - **Update the home page sections**: edit the relevant component in `lib/components/` and ensure it is composed in `lib/pages/home_page.dart`.
 - **Change site-wide colors/fonts/spacing**: edit `lib/constants/site_styles.dart`.
 - **Add a blog post**: create `content/posts/my_post.md` with at least `title:` and `date:` frontmatter.
-- **Add a project**: add an entry to `content/_data/projects.yaml` with `image`, `title`, `description`, `context`, `status` and `date`.
-- **Add a project page** (when markdown pages are re-enabled): create the project page at `content/projects/<name>.md`.
+- **Add a project**: add an entry to `content/_data/projects.yaml` with `image`, `title`, `description`, `context`, `status`, `date`, and optionally `stack` and `users`. Each card links automatically to `/projects/<slug>`.
+- **Add a project page**: run `dart run tool/create_project_pages.dart` to generate a placeholder at `content/projects/<slug>.md`, then edit it.

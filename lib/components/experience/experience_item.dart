@@ -2,7 +2,6 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import '../column.dart';
-import '../row.dart';
 import 'experience_date_range.dart';
 import 'experience_sizes.dart';
 
@@ -13,19 +12,21 @@ class ExperienceItemData {
     required this.logo,
     required this.name,
     required this.description,
+    required this.url,
   });
 
   final String date;
   final String logo;
   final String name;
   final String description;
+  final String url;
 }
 
 /// A single experience entry.
 ///
 /// Includes the date range, the timeline dot, the company logo, the title as
 /// `<h3>` and the description as `<p>`. Typography comes from the global `h3`
-/// and `p` styles.
+/// and `p` styles. The whole row links to the company's site.
 class ExperienceItem extends StatelessComponent {
   const ExperienceItem({required this.data, super.key});
 
@@ -33,11 +34,11 @@ class ExperienceItem extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return Row(
+    return a(
       classes: 'experience-item',
-      align: AlignItems.center,
-      gap: Gap.all(ExperienceSizes.gap),
-      children: [
+      href: data.url,
+      target: Target.blank,
+      [
         div(classes: 'experience-date', [
           ExperienceDateRange(date: data.date),
         ]),
@@ -62,7 +63,15 @@ class ExperienceItem extends StatelessComponent {
   static List<StyleRule> get styles => [
     css('.experience-item').styles(
       height: ExperienceSizes.itemHeight,
+      display: Display.flex,
+      flexDirection: FlexDirection.row,
+      alignItems: AlignItems.center,
+      gap: Gap.all(ExperienceSizes.gap),
       boxSizing: BoxSizing.borderBox,
+      textDecoration: TextDecoration.none,
+    ),
+    css('.experience-item:hover').styles(
+      opacity: 0.7,
     ),
     css('.experience-date').styles(
       width: ExperienceSizes.dateWidth,
@@ -95,5 +104,14 @@ class ExperienceItem extends StatelessComponent {
     css('.experience-text').styles(
       flex: Flex(grow: 1),
     ),
+    css('.experience-text p').styles(
+      textAlign: TextAlign.start,
+      maxWidth: 100.percent,
+    ),
+    css.media(MediaQuery.all(maxWidth: 700.px), [
+      css('.experience-item').styles(
+        height: Unit.auto,
+      ),
+    ]),
   ];
 }

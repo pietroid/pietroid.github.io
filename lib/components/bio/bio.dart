@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 
 import '../column.dart';
 import '../../constants/site_styles.dart';
+import 'bio_stack.dart';
 
 /// The home page bio section.
 ///
@@ -27,6 +28,7 @@ class Bio extends StatelessComponent {
               'Senior Software Engineer, building Mobile Experiences for the past 7 years.',
             ),
           ]),
+          const BioStack(),
         ],
       ),
     ]);
@@ -37,7 +39,10 @@ class Bio extends StatelessComponent {
     css('.bio').styles(
       width: 100.percent,
       maxWidth: 44.5625.rem,
-      padding: Padding.only(top: 3.rem, bottom: 6.rem),
+      padding: Padding.symmetric(
+        vertical: 3.rem,
+        horizontal: SiteDraftSpacings.bodyPadding,
+      ),
       boxSizing: BoxSizing.borderBox,
     ),
     css('.bio-avatar').styles(
@@ -54,7 +59,10 @@ class Bio extends StatelessComponent {
     ),
     css.media(MediaQuery.all(maxWidth: 700.px), [
       css('.bio').styles(
-        padding: Padding.all(SiteDraftSpacings.bodyPadding),
+        padding: Padding.all(SiteDraftSpacings.bodyPaddingMobile),
+      ),
+      css('.bio p').styles(
+        maxWidth: 100.percent,
       ),
     ]),
   ];

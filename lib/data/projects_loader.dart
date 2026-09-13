@@ -24,11 +24,21 @@ List<ProjectItemData> loadProjects() {
         description: entry['description'] as String,
         context: entry['context'] as String,
         contextColor: _contextColor(entry['context'] as String),
+        stack: entry['stack']?.toString(),
+        users: entry['users']?.toString(),
         status: entry['status'] as String,
         statusColor: _statusColor(entry['status'] as String),
         date: entry['date'].toString(),
+        url: '/projects/${_slug(entry['title'] as String)}',
       ),
   ];
+}
+
+String _slug(String title) {
+  return title
+      .toLowerCase()
+      .replaceAll(RegExp(r'[^a-z0-9]+'), '_')
+      .replaceAll(RegExp(r'^_+|_+$'), '');
 }
 
 ProjectContextColor _contextColor(String context) {

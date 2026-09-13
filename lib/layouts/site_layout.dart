@@ -33,7 +33,7 @@ class SiteLayout implements PageLayout {
         meta: {if (description != null) 'description': description},
       ),
       div(classes: 'site-page', [
-        SiteHeader(base: base),
+        SiteHeader(base: base, isHome: false),
         main_(classes: 'site-main', [
           if (isPost && title != null)
             div(classes: 'post-header', [
@@ -65,5 +65,13 @@ class SiteLayout implements PageLayout {
       ),
       boxSizing: BoxSizing.borderBox,
     ),
+    css.media(MediaQuery.all(maxWidth: 700.px), [
+      css('.site-main').styles(
+        padding: Padding.symmetric(
+          vertical: 2.rem,
+          horizontal: SiteDraftSpacings.bodyPaddingMobile,
+        ),
+      ),
+    ]),
   ];
 }

@@ -3,65 +3,93 @@ projects:
     title: Scribe
     description: An AI-Powered App to help people study any subject - based on Feynman technique.
     context: personal
+    stack: Flutter, Firebase, Typescript
     status: wip
     date: 2026
   - image: images/projects/pythontots.png
     title: Python to Typescript Backend Migration
-    description: Migration of over 20 endpoints proved that we could ship new features faster and more reliably than before.
+    description: Migrating over 20 endpoints to a structured, modern Typescript project, on top of Google Cloud Functions, inspired on Nest.js structure.
     context: freelancing
+    stack: Python, Typescript
+    users: 100K MAU
     status: done
     date: 2026
   - image: images/projects/deliverytime.png
     title: Delivery Time Optimization
-    description: Dropping the delivery cycle of a startup product from 3 months to 3 weeks.
+    description: Dropping the delivery cycle of a startup product from 3 months to 3 weeks using automated release pipeline and Scrum inspired practices.
     context: freelancing
+    stack: Github Actions, Flutter, Typescript
+    users: 100K MAU
     status: done
     date: 2026
-  - image: images/projects/startuptracing.png
-    title: App Launch Time Analysis
-    description: Launch time is a critical user metric for a big banking application. I conducted the analysis on both Android and Flutter Layer.
+  - image: images/projects/vgv.png
+    title: Fullstack Leisure App
+    description: Maintained and released new features of a major american leisure company - both in Flutter and Scala for Backend and BFF.
     context: very good ventures
+    users: 500K MAU
+    stack: Flutter, Scala
+    status: done
+    date: 2025
+  - image: images/projects/vgv.png
+    title: App Launch Time Analysis
+    description: Launch time was a critical user metric for a big banking application. I lead the analysis on both Android and Flutter Layer.
+    context: very good ventures
+    stack: Android, Kotlin, Flutter
+    users: 5M+ MAU
     status: done
     date: 2025
   - image: images/projects/sduihome.png
     title: Server-Driven UI for Home
-    description: Established the foundations for server-driven UI experience on the frontend.
+    description: Established the foundations for server-driven UI experience on the frontend layer, integrating JSON payloads to our Design System.
     context: quintoandar
+    stack: Flutter, Java
+    users: 1M+ MAU
     status: done
     date: 2024
   - image: images/projects/mapoverhaul.png
     title: Map Search Revamp
-    description: Total revamp of the map search feature, including map interaction, UI, animations and geographical search data handling. 
+    description: Total revamp of the Map search feature, introducing new map interactions, new pins look and feel on top of Google Maps Flutter. Remodeled geographical based backend search.
     context: quintoandar
+    stack: Flutter, Google Maps, Python
+    users: 1M+ MAU
     status: done
     date: 2023
   - image: images/projects/internalchat.png
     title: Internal Chat
-    description: Replacing generic WhatsApp for support with an internal chat system inside the App.
+    description: Replacing generic WhatsApp for support with an internal chat system inside the App using Twilio SDK and custom backend.
     context: quintoandar
+    stack: Flutter, Twilio SDK
+    users: 1M+ MAU
     status: done
     date: 2022
-  # - image: images/project.png
-  #   title: Coupons and Offers
-  #   description: Maintained and released new features for the coupons and offers section of the application, maintaining both BFF and Mobile App.
-  #   context: raiadrogasil
-  #   status: done
-  #   date: 2021
-  # - image: images/project.png
-  #   title: Loyalty Product
-  #   description: Launched with the team a new loyalty product in the market in 8 months.
-  #   context: raiadrogasil
-  #   status: done
-  #   date: 2020
+  - image: images/projects/rd2.png
+    title: Coupons and Offers
+    description: Maintained and released new features for the coupons and offers section of the application, maintaining both BFF and Mobile App.
+    context: raiadrogasil
+    stack: React Native, Typescript, MongoDB
+    users: 5M+ MAU
+    status: done
+    date: 2021
+  - image: images/projects/rd1.png
+    title: Loyalty Product
+    description: Launched with a new loyalty product in the market in 8 months.
+    stack: React Native, Typescript, MongoDB
+    context: raiadrogasil
+    users: 5M+ MAU
+    status: done
+    date: 2020
   - image: images/projects/psiquiatria.png
     title: Psiquiatria Paulista App
     description: Launched the Psiquiatria Paulista App, providing a comprehensive platform for mental health services.
     context: indigo labs
+    stack: Android, Java, Typescript
+    users: 500
     status: done
     date: 2019
   - image: images/projects/enduroids.png
     title: Enduroids
     description: My first game I have ever published at 13 years old.
+    stack: Flash
     context: personal
     status: done
     date: 2009
