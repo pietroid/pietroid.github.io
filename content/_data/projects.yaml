@@ -1,16 +1,16 @@
 projects:
-  - image: images/projects/scribe.png
-    title: Scribe
-    description: An AI-Powered App to help people study any subject - based on Feynman technique.
-    context: personal
-    stack: Flutter, Firebase, Typescript
-    status: wip
-    date: 2026
+  # - image: images/projects/scribe.png
+  #   title: Scribe
+  #   description: An AI-Powered App to help people study any subject - based on Feynman technique.
+  #   context: personal
+  #   stack: Flutter, Firebase, Typescript
+  #   status: wip
+  #   date: 2026
   - image: images/projects/pythontots.png
     title: Python to Typescript Backend Migration
     description: Migrating over 20 endpoints to a structured, modern Typescript project, on top of Google Cloud Functions, inspired on Nest.js structure.
     context: freelancing
-    stack: Python, Typescript
+    stack: Typescript, Python
     users: 100K MAU
     status: done
     date: 2026
@@ -18,7 +18,7 @@ projects:
     title: Delivery Time Optimization
     description: Dropping the delivery cycle of a startup product from 3 months to 3 weeks using automated release pipeline and Scrum inspired practices.
     context: freelancing
-    stack: Github Actions, Flutter, Typescript
+    stack: Github Actions
     users: 100K MAU
     status: done
     date: 2026
@@ -27,14 +27,14 @@ projects:
     description: Maintained and released new features of a major american leisure company - both in Flutter and Scala for Backend and BFF.
     context: very good ventures
     users: 500K MAU
-    stack: Flutter, Scala
+    stack: Flutter, Scala, Kubernetes
     status: done
     date: 2025
   - image: images/projects/vgv.png
     title: App Launch Time Analysis
     description: Launch time was a critical user metric for a big banking application. I lead the analysis on both Android and Flutter Layer.
     context: very good ventures
-    stack: Android, Kotlin, Flutter
+    stack: Kotlin, Flutter
     users: 5M+ MAU
     status: done
     date: 2025
@@ -42,7 +42,7 @@ projects:
     title: Server-Driven UI for Home
     description: Established the foundations for server-driven UI experience on the frontend layer, integrating JSON payloads to our Design System.
     context: quintoandar
-    stack: Flutter, Java
+    stack: Flutter
     users: 1M+ MAU
     status: done
     date: 2024
@@ -50,7 +50,7 @@ projects:
     title: Map Search Revamp
     description: Total revamp of the Map search feature, introducing new map interactions, new pins look and feel on top of Google Maps Flutter. Remodeled geographical based backend search.
     context: quintoandar
-    stack: Flutter, Google Maps, Python
+    stack: Flutter, Google Maps SDK, Kotlin, Swift, Python
     users: 1M+ MAU
     status: done
     date: 2023
@@ -58,7 +58,7 @@ projects:
     title: Internal Chat
     description: Replacing generic WhatsApp for support with an internal chat system inside the App using Twilio SDK and custom backend.
     context: quintoandar
-    stack: Flutter, Twilio SDK
+    stack: Flutter, Kotlin, Swift, Twilio SDK
     users: 1M+ MAU
     status: done
     date: 2022
@@ -82,14 +82,14 @@ projects:
     title: Psiquiatria Paulista App
     description: Launched the Psiquiatria Paulista App, providing a comprehensive platform for mental health services.
     context: indigo labs
-    stack: Android, Java, Typescript
+    stack: Java Android, Typescript, MySQL
     users: 500
     status: done
     date: 2019
   - image: images/projects/enduroids.png
     title: Enduroids
     description: My first game I have ever published at 13 years old.
-    stack: Flash
+    stack: Macromedia Flash
     context: personal
     status: done
     date: 2009

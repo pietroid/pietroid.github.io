@@ -9,7 +9,7 @@ description: "Launched the Psiquiatria Paulista App, providing a comprehensive p
 
 I graduated in Mechatronics Engineering and one of my dreams was to work with Healthcare technologies.
 
-Because of that, I ended up founding my own Startup, Indigo Labs. It just lasted one year, but I learned many things out of it.
+Because of that, I ended up founding my own Startup with two other partners, Indigo Labs. It just lasted one year, but I learned many things out of it.
 
 One of the cool things we built in our Startup was an App to help and incentivize patients on their Psychiatric treatment. 
 

@@ -7,18 +7,18 @@ description: "Established the foundations for server-driven UI experience on the
 
 # Server-Driven UI for Home (2024) - QuintoAndar
 
-This is what can be done with a mature Design System when it meets the needs of a highly flexibe home page.
+This is what can be done with a mature Design System when it meets the needs of a highly flexibe Home Page.
 
 # The problem
 
-Having multipe types of possible experiences for multiple types of users (tenants, owners, buyers, sellers), the QuintoAndar App needed a more tailored home considering which point of the journey the user was in. 
+Having multipe types of possible experiences for multiple types of users (Tenants, Owners, Buyers, Sellers), the QuintoAndar App needed a more tailored home considering which point of the journey the user was in. 
 
-The default home page was always a search one, which for a lot of users didn't really made sense and made them have more friction to really understand what needed to be done.
+The default home page was always a Search one, which for a lot of users didn't really made sense and made them have more friction to really understand what they needed to do.
 
 # The solution
 
 Our team chose to provide a list of cards with actionables. It could be a card saying about a visit and a call to action to confirm it, or a card saying about your upcoming bill. The simplification here is that for each theme you have, you have a very clear action.
 
-Because of so many options, we decided to render content dynamically: based on each type of component coming from the backend, the frontend would know exactly what to render, with which information.
+Because of so many options, we decided to render content dynamically: based on each type of component coming from the Backend, the Frontend would know exactly what to render, with which information.
 
-I created all the abstractions for parsing the `JSON` payload from the backend, which included both dynamic content (title, subtitle), but also pre-defined actions, which considered versioning both in the folder structure and while fetching the remote config to know from which version to fetch from the backend. 
+I created all the abstractions for parsing the `JSON` payload from the Backend, which included both dynamic content (title, subtitle), but also pre-defined actions. It also considered versioning both in the folder structure and while fetching the `Remote Config`.

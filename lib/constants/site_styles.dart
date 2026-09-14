@@ -16,6 +16,9 @@ class SiteDraftColors {
 
   /// Bio/home frame background (near-black from the Figma home design).
   static const bioBackground = Color('#0f0f0f');
+
+  /// Bright blue accent used for decorative highlights (e.g. the footer heart).
+  static const jasprBlue = Color('#3b82f6');
 }
 
 /// Shared font families and fallback stacks from the offline draft style

@@ -5,6 +5,9 @@
 // Generated with jaspr_builder
 
 import 'package:jaspr/server.dart';
+import 'package:jaspr_content/components/_internal/zoomable_image.dart'
+    as _zoomable_image;
+import 'package:jaspr_content/components/image.dart' as _image;
 import 'package:pietroid_github_io/components/bio/bio.dart' as _bio;
 import 'package:pietroid_github_io/components/bio/bio_stack.dart' as _bio_stack;
 import 'package:pietroid_github_io/components/blog/blog_post_item.dart'
@@ -39,6 +42,9 @@ import 'package:pietroid_github_io/components/projects/projects_list.dart'
     as _projects_list;
 import 'package:pietroid_github_io/components/projects/projects_section.dart'
     as _projects_section;
+import 'package:pietroid_github_io/components/apps_client_component.dart'
+    as _apps_client_component;
+import 'package:pietroid_github_io/components/home_footer.dart' as _home_footer;
 import 'package:pietroid_github_io/components/site_header.dart' as _site_header;
 import 'package:pietroid_github_io/layouts/site_layout.dart' as _site_layout;
 import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
@@ -61,7 +67,20 @@ import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
 /// ```
 ServerOptions get defaultServerOptions => ServerOptions(
   clientId: 'main.client.dart.js',
+  clients: {
+    _zoomable_image.ZoomableImage: ClientTarget<_zoomable_image.ZoomableImage>(
+      'jaspr_content:zoomable_image',
+      params: __zoomable_imageZoomableImage,
+    ),
+    _apps_client_component.AppsClientComponent:
+        ClientTarget<_apps_client_component.AppsClientComponent>(
+          'apps_client_component',
+        ),
+  },
   styles: () => [
+    ..._image.Image.styles,
+    ..._zoomable_image.ZoomableImage.styles,
+    ..._home_footer.HomeFooter.styles,
     ..._site_header.SiteHeader.styles,
     ..._bio.Bio.styles,
     ..._bio_stack.BioStack.styles,
@@ -85,3 +104,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._home_page.HomePage.styles,
   ],
 );
+
+Map<String, Object?> __zoomable_imageZoomableImage(
+  _zoomable_image.ZoomableImage c,
+) => {'src': c.src, 'alt': c.alt, 'caption': c.caption};

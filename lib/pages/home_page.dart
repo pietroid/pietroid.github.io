@@ -5,6 +5,7 @@ import '../components/bio/bio.dart';
 import '../components/blog/last_posts_section.dart';
 import '../components/education/education_section.dart';
 import '../components/experience/experience_section.dart';
+import '../components/home_footer.dart';
 import '../components/projects/projects_section.dart';
 import '../components/site_header.dart';
 import '../constants/site_styles.dart';
@@ -35,6 +36,7 @@ class HomePage extends StatelessComponent {
         const EducationSection(),
         ProjectsSection(),
         LastPostsSection(),
+        const HomeFooter(),
       ]),
     ]);
   }

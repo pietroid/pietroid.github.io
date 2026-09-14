@@ -23,6 +23,7 @@ class EducationSection extends StatelessComponent {
       date: '2014 - 2019',
       title: 'Mechatronics Engineering Bachelor Degree',
       subtitle: 'University of São Paulo',
+      url: 'https://www5.usp.br/english/institutional/',
       logo: 'images/usp.svg',
       invertLogo: true,
     ),

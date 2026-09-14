@@ -6,6 +6,11 @@
 
 import 'package:jaspr/client.dart';
 
+import 'package:jaspr_content/components/_internal/zoomable_image.dart'
+    deferred as _zoomable_image;
+import 'package:pietroid_github_io/components/apps_client_component.dart'
+    deferred as _apps_client_component;
+
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
 /// Use this to initialize Jaspr **before** calling [runApp].
@@ -22,4 +27,19 @@ import 'package:jaspr/client.dart';
 ///   runApp(...);
 /// }
 /// ```
-ClientOptions get defaultClientOptions => ClientOptions();
+ClientOptions get defaultClientOptions => ClientOptions(
+  clients: {
+    'jaspr_content:zoomable_image': ClientLoader(
+      (p) => _zoomable_image.ZoomableImage(
+        src: p['src'] as String,
+        alt: p['alt'] as String?,
+        caption: p['caption'] as String?,
+      ),
+      loader: _zoomable_image.loadLibrary,
+    ),
+    'apps_client_component': ClientLoader(
+      (p) => _apps_client_component.AppsClientComponent(),
+      loader: _apps_client_component.loadLibrary,
+    ),
+  },
+);

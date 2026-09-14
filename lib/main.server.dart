@@ -6,10 +6,12 @@ library;
 
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
+import 'package:jaspr_content/components/image.dart' as content_image;
 import 'package:jaspr_content/jaspr_content.dart';
 import 'package:jaspr_content/theme.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
+import 'components/apps.dart';
 import 'components/blog/blog_index.dart';
 import 'extensions/demote_headings_extension.dart';
 import 'github_pages_base.dart';
@@ -60,6 +62,10 @@ void main() {
               pattern: RegExp(r'^BlogIndex$'),
               builder: (name, attributes, child) => const BlogIndex(),
             ),
+            // Embeds the Flutter apps grid demo.
+            const Apps(),
+            // Renders <Image src="..."/> tags with zoom support.
+            const content_image.Image(zoom: true),
           ],
           layouts: [SiteLayout(base: base)],
           theme: ContentTheme.none(),
