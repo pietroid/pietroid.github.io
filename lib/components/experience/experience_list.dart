@@ -3,12 +3,10 @@ import 'package:jaspr/jaspr.dart';
 
 import '../column.dart';
 import 'experience_item.dart';
-import 'experience_timeline.dart';
 
 /// The list of experience entries.
 ///
-/// Renders the vertical timeline line behind the items; each item supplies its
-/// own dot, date and content.
+/// Each item supplies its own dot, date, content and timeline segment.
 class ExperienceList extends StatelessComponent {
   const ExperienceList({required this.items, super.key});
 
@@ -17,7 +15,6 @@ class ExperienceList extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return div(classes: 'experience-list', [
-      const ExperienceTimeline(),
       Column(
         classes: 'experience-items',
         align: AlignItems.start,

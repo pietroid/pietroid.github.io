@@ -26,7 +26,7 @@ class HomePage extends StatelessComponent {
         title: 'Pietro Teruya Domingues',
         meta: {
           'description':
-              'Software Engineer specialized in Flutter & mobile development, with a mechatronics background.',
+              'Senior Mobile Engineer and tech lead: Flutter, native iOS/Android and backend, leading launches for apps with millions of users.',
         },
       ),
       div(classes: 'home-page', [
