@@ -26,6 +26,8 @@ import 'package:pietroid_github_io/components/experience/experience_list.dart'
     as _experience_list;
 import 'package:pietroid_github_io/components/experience/experience_section.dart'
     as _experience_section;
+import 'package:pietroid_github_io/components/experience/experience_timeline.dart'
+    as _experience_timeline;
 import 'package:pietroid_github_io/components/projects/project_context.dart'
     as _project_context;
 import 'package:pietroid_github_io/components/projects/project_image.dart'
@@ -90,6 +92,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._experience_item.ExperienceItem.styles,
     ..._experience_list.ExperienceList.styles,
     ..._experience_section.ExperienceSection.styles,
+    ..._experience_timeline.ExperienceTimeline.styles,
     ..._project_context.ProjectContext.styles,
     ..._project_image.ProjectImage.styles,
     ..._project_item.ProjectItem.styles,

@@ -39,7 +39,7 @@ projects:
     date: 2025
   - image: images/projects/vgv.png
     title: App Launch Time Analysis
-    description: Led a team of three analysing and optimizing the launch time of a major Brazilian banking app, across native Android and Flutter, with a prioritized plan the client could act on.
+    description: Led two engineers to optimize the launch time of a major Brazilian banking app, across native Android and Flutter.
     context: very good ventures
     stack: Kotlin, Flutter
     users: 5M+ MAU
