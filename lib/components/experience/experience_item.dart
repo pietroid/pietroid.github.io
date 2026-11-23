@@ -9,14 +9,16 @@ import 'experience_sizes.dart';
 class ExperienceItemData {
   const ExperienceItemData({
     required this.date,
-    required this.logo,
     required this.name,
     required this.description,
     required this.url,
+    this.logo,
   });
 
   final String date;
-  final String logo;
+  /// Company logo. When null, a neutral placeholder is shown (e.g. a stealth
+  /// company that can't be named).
+  final String? logo;
   final String name;
   final String description;
   final String url;
@@ -44,7 +46,10 @@ class ExperienceItem extends StatelessComponent {
         ]),
         div(classes: 'experience-dot', []),
         div(classes: 'experience-logo', [
-          img(src: data.logo, alt: '${data.name} logo'),
+          if (data.logo case final logo?)
+            img(src: logo, alt: '${data.name} logo')
+          else
+            div(classes: 'experience-logo-placeholder', []),
         ]),
         Column(
           classes: 'experience-text',
@@ -100,6 +105,13 @@ class ExperienceItem extends StatelessComponent {
       maxWidth: 100.percent,
       maxHeight: 100.percent,
       display: Display.block,
+    ),
+    css('.experience-logo-placeholder').styles(
+      width: 100.percent,
+      height: 100.percent,
+      radius: BorderRadius.circular(0.5.rem),
+      border: Border.all(style: BorderStyle.solid, width: 1.px, color: Color('rgba(255, 255, 255, 0.18)')),
+      boxSizing: BoxSizing.borderBox,
     ),
     css('.experience-text').styles(
       flex: Flex(grow: 1),

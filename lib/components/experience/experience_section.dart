@@ -16,32 +16,45 @@ class ExperienceSection extends StatelessComponent {
 
   static const _items = [
     ExperienceItemData(
+      date: '2026 - now',
+      logo: 'images/lunna.png',
+      name: 'Founder - Lunna',
+      description: 'Agentic organization for women entrepreneurs. In beta.',
+      url: 'https://lunna.pietroteruya.dev',
+    ),
+    ExperienceItemData(
       date: '2025 - now',
       logo: 'images/vgv.png',
-      name: 'Senior Engineer - Very Good Ventures',
+      name: 'Senior Mobile Engineer - Very Good Ventures',
       description: 'Global consultancy expert in Flutter',
       url: 'https://verygood.ventures',
     ),
     ExperienceItemData(
-      date: '2022 - 2025',
+      date: '2025 - 2026',
+      name: 'Tech Lead (contract) - Stealth startup',
+      description: 'Consumer app with 100K MAU, 8 months',
+      url: 'https://pietroid.github.io/projects/delivery_time_optimization',
+    ),
+    ExperienceItemData(
+      date: '2021 - 2024',
       logo: 'images/quintoandar.svg',
-      name: 'Software Engineer - QuintoAndar',
-      description: 'The Largest Proptech on Brazil',
+      name: 'Mobile Engineer - QuintoAndar',
+      description: 'The largest proptech in Brazil',
       url: 'https://grupoquintoandar.com/',
     ),
     ExperienceItemData(
-      date: '2020 - 2022',
+      date: '2020 - 2021',
       logo: 'images/rd.svg',
-      name: 'Mobile Developer - RD Saúde',
-      description: 'Largest Pharmacy Retail on Brazil',
+      name: 'Fullstack Engineer - RaiaDrogasil (RD Saúde)',
+      description: 'The largest pharmacy retailer in Brazil',
       url: 'https://rdsaude.com.br/',
     ),
     ExperienceItemData(
       date: '2019 - 2020',
       logo: 'images/indigo.png',
       name: 'Tech Founder - Indigo Labs',
-      description: 'Health Tech Startup Co-Founded by me',
-      url: 'https://www.linkedin.com/company/indigolabs/',
+      description: 'Health tech startup I co-founded',
+      url: 'https://pietroid.github.io/projects/psiquiatria_paulista_app',
     ),
   ];
 

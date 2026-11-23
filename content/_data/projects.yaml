@@ -1,4 +1,11 @@
 projects:
+  - image: images/projects/lunna.png
+    title: Lunna
+    description: Agentic organization for women entrepreneurs. Say what you need and the AI agent proposes a plan for your day, with deliveries and monthly goals on the same calendar. Built solo, from product vision to Flutter app and NestJS backend.
+    context: personal
+    stack: Flutter, NestJS, TypeScript, LLM agents
+    status: beta
+    date: 2026
   # - image: images/projects/scribe.png
   #   title: Scribe
   #   description: An AI-Powered App to help people study any subject - based on Feynman technique.
@@ -16,7 +23,7 @@ projects:
     date: 2026
   - image: images/projects/deliverytime.png
     title: Delivery Time Optimization
-    description: Dropping the delivery cycle of a startup product from 3 months to 3 weeks using automated release pipeline and Scrum inspired practices.
+    description: Cut a startup's release cycle from 3 months to 3 weeks with an automated release pipeline and clear release ownership, helping it ship 10+ experiments in 8 months.
     context: freelancing
     stack: Github Actions
     users: 100K MAU
@@ -24,7 +31,7 @@ projects:
     date: 2026
   - image: images/projects/vgv.png
     title: Fullstack Leisure App
-    description: Maintained and released new features of a major american leisure company - both in Flutter and Scala for Backend and BFF.
+    description: Led engineers to launch three new products for a major US entertainment company, owning the Scala backend and BFF plus the Flutter app.
     context: very good ventures
     users: 500K MAU
     stack: Flutter, Scala, Kubernetes
@@ -32,7 +39,7 @@ projects:
     date: 2025
   - image: images/projects/vgv.png
     title: App Launch Time Analysis
-    description: Launch time was a critical user metric for a big banking application. I lead the analysis on both Android and Flutter Layer.
+    description: Led two engineers to optimize the launch time of a major Brazilian banking app, across native Android and Flutter.
     context: very good ventures
     stack: Kotlin, Flutter
     users: 5M+ MAU
@@ -40,7 +47,7 @@ projects:
     date: 2025
   - image: images/projects/sduihome.png
     title: Server-Driven UI for Home
-    description: Established the foundations for server-driven UI experience on the frontend layer, integrating JSON payloads to our Design System.
+    description: Server-driven home feed integrated with the design system, so product teams could launch and test new content without an app release.
     context: quintoandar
     stack: Flutter
     users: 1M+ MAU
@@ -48,7 +55,7 @@ projects:
     date: 2024
   - image: images/projects/mapoverhaul.png
     title: Map Search Revamp
-    description: Total revamp of the Map search feature, introducing new map interactions, new pins look and feel on top of Google Maps Flutter. Remodeled geographical based backend search.
+    description: Led the Map Search revamp, a custom native map-pin plugin on Flutter plus a retuned geospatial search. Experiments lifted conversion by 15%.
     context: quintoandar
     stack: Flutter, Google Maps SDK, Kotlin, Swift, Python
     users: 1M+ MAU
@@ -56,7 +63,7 @@ projects:
     date: 2023
   - image: images/projects/internalchat.png
     title: Internal Chat
-    description: Replacing generic WhatsApp for support with an internal chat system inside the App using Twilio SDK and custom backend.
+    description: Replaced WhatsApp support with an in-app chat on native Twilio SDKs bridged to Flutter, saving $1M a year in messaging costs.
     context: quintoandar
     stack: Flutter, Kotlin, Swift, Twilio SDK
     users: 1M+ MAU
@@ -72,7 +79,7 @@ projects:
     date: 2021
   - image: images/projects/rd1.png
     title: Loyalty Product
-    description: Launched with a new loyalty product in the market in 8 months.
+    description: Led a team of mobile engineers to launch a new loyalty product to the Brazilian market in 8 months, impacting millions of customers. Still live.
     stack: React Native, Typescript, MongoDB
     context: raiadrogasil
     users: 5M+ MAU
@@ -80,7 +87,7 @@ projects:
     date: 2020
   - image: images/projects/psiquiatria.png
     title: Psiquiatria Paulista App
-    description: Launched the Psiquiatria Paulista App, providing a comprehensive platform for mental health services.
+    description: Launched a psychiatric treatment tracking app for 500 patients and clinicians. It led to the team's acqui-hire by RaiaDrogasil.
     context: indigo labs
     stack: Java Android, Typescript, MySQL
     users: 500
