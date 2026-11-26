@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'model.dart';
-import 'plan_screen.dart' show SizeChip;
 import 'ui.dart';
 
-/// Scenario 2, every day: check-in, suggested steps, drag to adjust.
+/// Moment 2, daily: a one-tap mood check-in sizes today's goals.
 class TodayScreen extends StatelessWidget {
   const TodayScreen({required this.model, required this.onGoToPlan, required this.onGoToRetro, super.key});
 
@@ -15,75 +14,89 @@ class TodayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!model.started) {
-      return _Empty(
-        title: 'Plan your week first',
-        text: 'Set your goals and steps, then come back here each day.',
-        button: 'Go to plan',
-        onTap: onGoToPlan,
+      return FinchList(
+        children: [
+          const ScreenTitle(
+            title: 'Plan your week first',
+            subtitle: 'Set your missions and their goals, then come back here each day.',
+          ),
+          const SizedBox(height: 8),
+          FinchButton(label: 'Go to missions', onTap: onGoToPlan),
+        ],
       );
     }
     if (model.weekOver) {
-      return _Empty(
-        title: 'Your week is done',
-        text: 'Time to look back at what you did.',
-        button: 'See my retro',
-        onTap: onGoToRetro,
+      return FinchList(
+        children: [
+          const ScreenTitle(title: 'Your week is done', subtitle: 'Time to look back at what you did.'),
+          const SizedBox(height: 8),
+          FinchButton(label: 'See my week', onTap: onGoToRetro),
+        ],
       );
     }
-    final energy = model.energy;
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+
+    final mood = model.mood;
+    final left = model.leftToday;
+    final String title;
+    if (mood == null) {
+      final week = model.remainingGoals;
+      title = '$week goal${week == 1 ? '' : 's'} left this week';
+    } else if (!model.accepted) {
+      final n = model.plannedToday;
+      title = 'Plan today: $n goal${n == 1 ? '' : 's'}';
+    } else if (model.plannedToday == 0) {
+      title = 'A rest day today';
+    } else if (left == 0) {
+      title = 'All done for today!';
+    } else {
+      title = '$left goal${left == 1 ? '' : 's'} left for today!';
+    }
+
+    final body = FinchList(
       children: [
-        SkyHeader(
-          label: 'Week ${model.week} · Day ${model.day + 1} of 7',
-          title: dayLong[model.day],
-          subtitle: energy == null ? 'Good to see you. How are you today?' : energy.planLabel,
-        ),
-        const SizedBox(height: 12),
+        ScreenTitle(label: '${dayLong[model.day]} · day ${model.day + 1} of 7', title: title),
+        const SizedBox(height: 2),
         WeekStrip(model: model),
-        const SizedBox(height: 12),
-        if (energy == null)
+        const SizedBox(height: 8),
+        if (mood == null)
           CheckInCard(model: model)
         else ...[
-          _EnergyRow(model: model, energy: energy),
-          const SizedBox(height: 12),
-          PaceCard(model: model),
-          const SizedBox(height: 4),
-          if (model.remainingPoints == 0 && model.goals.every((g) => model.doneToday(g).isEmpty))
-            _AllDone(onGoToRetro: onGoToRetro)
-          else if (!model.accepted) ...[
-            const SectionLabel('Suggested for today · drag to adjust'),
-            for (final goal in model.goals)
-              if (model.maxCount(goal) > 0) ...[
-                GoalSliderCard(model: model, goal: goal),
-                const SizedBox(height: 10),
-              ],
-            const SizedBox(height: 6),
-            FinchButton(label: 'Accept plan', icon: Icons.check_rounded, onTap: model.accept),
-          ] else ...[
-            const SectionLabel('Today'),
-            for (final goal in model.goals)
-              if (model.plannedFor(goal).isNotEmpty) ...[
-                TodayChecklistCard(model: model, goal: goal),
-                const SizedBox(height: 10),
-              ],
-            if (model.plannedPointsToday == 0)
-              const FinchCard(
-                color: FinchColors.greenTint,
-                child: Text('A rest day. Nothing planned, and that is fine.', style: TextStyle(fontSize: 15)),
+          _MoodRow(model: model, mood: mood),
+          if (model.remainingGoals == 0 && model.missions.every((m) => model.doneToday(m).isEmpty)) ...[
+            const SizedBox(height: 12),
+            const WhiteCard(
+              child: Text(
+                'Every goal of the week is done. Enjoy the rest of it.',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, height: 1.35),
               ),
-            const SizedBox(height: 6),
+            ),
+            FinchButton(label: 'See my week', onTap: onGoToRetro),
+          ] else if (!model.accepted) ...[
+            // Planning the day: adjust the suggestion, then start the day.
+            for (final mission in model.missions)
+              if (model.plannedFor(mission).isNotEmpty || mission.remaining.isNotEmpty)
+                _MissionToday(model: model, mission: mission, planning: true),
+            const SizedBox(height: 8),
+            FinchButton(label: 'Start my day', onTap: model.accept),
+            const _Hint('Suggested from what is left and your mood. Use − / + to change it.'),
+          ] else ...[
+            // Doing the day: tick goals off.
+            for (final mission in model.missions)
+              if (model.plannedFor(mission).isNotEmpty) _MissionToday(model: model, mission: mission, planning: false),
+            if (model.plannedToday == 0)
+              const WhiteCard(
+                child: Text('Nothing planned today, and that is fine.', style: TextStyle(fontSize: 14)),
+              ),
+            const SizedBox(height: 8),
             Row(
               children: [
                 Expanded(
-                  child: FinchButton(label: 'Adjust', primary: false, onTap: model.adjust),
+                  child: FinchButton(label: 'Adjust plan', light: true, onTap: model.adjust),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  flex: 2,
                   child: FinchButton(
-                    label: model.day < 6 ? 'End day' : 'End week',
-                    icon: Icons.nights_stay_rounded,
+                    label: model.day < 6 ? 'End the day' : 'End the week',
                     onTap: () {
                       final last = model.day == 6;
                       model.endDay();
@@ -93,64 +106,28 @@ class TodayScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Steps you don\'t finish move to tomorrow and count in tomorrow\'s plan.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: FinchColors.textSecondary),
-            ),
+            const _Hint('Goals you don\'t finish move to tomorrow.'),
           ],
         ],
       ],
     );
-  }
-}
+    if (mood != null) return body;
 
-class _Empty extends StatelessWidget {
-  const _Empty({required this.title, required this.text, required this.button, required this.onTap});
-
-  final String title;
-  final String text;
-  final String button;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-      children: [
-        SkyHeader(title: title, subtitle: text),
-        const SizedBox(height: 16),
-        FinchButton(label: button, onTap: onTap),
-      ],
-    );
-  }
-}
-
-class _AllDone extends StatelessWidget {
-  const _AllDone({required this.onGoToRetro});
-
-  final VoidCallback onGoToRetro;
-
-  @override
-  Widget build(BuildContext context) {
+    // Before the check-in, a way to the end of the week, pinned at the
+    // bottom so the next moment is easy to find.
     return Column(
       children: [
-        const SizedBox(height: 8),
-        const FinchCard(
-          color: FinchColors.greenTint,
-          child: Text(
-            'Every step of the week is done. You can rest for the remaining days.',
-            style: TextStyle(fontSize: 15, height: 1.35),
-          ),
+        Expanded(child: body),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(14, 0, 14, 16),
+          child: FinchButton(label: 'End the week', light: true, onTap: onGoToRetro),
         ),
-        const SizedBox(height: 12),
-        FinchButton(label: 'See my retro', icon: Icons.celebration_rounded, onTap: onGoToRetro),
       ],
     );
   }
 }
 
+/// Mon–Sun row: goals done each day, today highlighted.
 class WeekStrip extends StatelessWidget {
   const WeekStrip({required this.model, super.key});
 
@@ -158,21 +135,22 @@ class WeekStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final perDay = model.actualRetro().stepsPerDay;
+    final perDay = List.filled(7, 0);
+    for (final m in model.missions) {
+      for (final g in m.goals) {
+        if (g.doneDay != null && g.doneDay! < 7) perDay[g.doneDay!]++;
+      }
+    }
     return Row(
       children: [
         for (var d = 0; d < 7; d++)
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 2),
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               decoration: BoxDecoration(
-                color: d == model.day ? FinchColors.yellowTint : FinchColors.surface,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: d == model.day ? FinchColors.yellowShadow : FinchColors.border,
-                  width: 2,
-                ),
+                color: d == model.day ? FinchColors.card : FinchColors.ghost,
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
                 children: [
@@ -181,21 +159,18 @@ class WeekStrip extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
-                      color: d < model.day ? FinchColors.textSecondary : FinchColors.text,
+                      color: d == model.day ? FinchColors.text : FinchColors.onBackground,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  if (d < model.day || perDay[d] > 0)
-                    Text(
-                      '${perDay[d]}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: perDay[d] > 0 ? FinchColors.green : FinchColors.borderShadow,
-                      ),
-                    )
-                  else
-                    const Icon(Icons.circle, size: 6, color: FinchColors.border),
+                  const SizedBox(height: 2),
+                  Text(
+                    perDay[d] > 0 ? '${perDay[d]}' : (d < model.day ? '0' : '·'),
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: d == model.day ? FinchColors.check : FinchColors.onBackground,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -212,41 +187,37 @@ class CheckInCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FinchCard(
+    final carried = model.carriedCount;
+    return WhiteCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('How is your energy today?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          const Text('How are you feeling?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
           const SizedBox(height: 4),
           const Text(
-            'One tap. It only sizes today\'s plan.',
-            style: TextStyle(fontSize: 13, color: FinchColors.textSecondary),
+            'One tap. It only decides how many goals land on today.',
+            style: TextStyle(fontSize: 12.5, color: FinchColors.textSecondary),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Row(
             children: [
-              for (final e in Energy.values)
+              for (final m in Mood.values)
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: _EnergyTile(energy: e, onTap: () => model.checkIn(e)),
+                    child: _MoodTile(mood: m, onTap: () => model.checkIn(m)),
                   ),
                 ),
             ],
           ),
-          if (model.carriedCount > 0) ...[
-            const SizedBox(height: 12),
-            Pill(
-              text: '${model.carriedCount} step${model.carriedCount == 1 ? '' : 's'} carried from yesterday',
-              icon: Icons.redo_rounded,
-              color: FinchColors.ink,
-              tint: FinchColors.blueTint,
-            ),
+          if (carried > 0) ...[
+            const SizedBox(height: 14),
+            Tag('$carried goal${carried == 1 ? '' : 's'} carried from yesterday'),
           ],
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Center(
             child: TextButton(
-              onPressed: () => model.checkIn(Energy.ok),
+              onPressed: () => model.checkIn(Mood.ok),
               child: const Text('Skip, plan a normal day', style: TextStyle(color: FinchColors.textSecondary)),
             ),
           ),
@@ -256,38 +227,31 @@ class CheckInCard extends StatelessWidget {
   }
 }
 
-class _EnergyTile extends StatelessWidget {
-  const _EnergyTile({required this.energy, required this.onTap});
+class _MoodTile extends StatelessWidget {
+  const _MoodTile({required this.mood, required this.onTap});
 
-  final Energy energy;
+  final Mood mood;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final (tint, accent) = switch (energy) {
-      Energy.low => (FinchColors.pinkTint, const Color(0xFFC0487E)),
-      Energy.ok => (FinchColors.blueTint, const Color(0xFF3D8FC4)),
-      Energy.good => (FinchColors.greenTint, FinchColors.green),
-    };
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          margin: const EdgeInsets.only(bottom: 4),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: tint,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: accent.withValues(alpha: 0.25), width: 2),
+            color: FinchColors.button,
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: const [BoxShadow(color: FinchColors.buttonShadow, offset: Offset(0, 4))],
           ),
           child: Column(
             children: [
-              Icon(energy.icon, color: accent, size: 28),
-              const SizedBox(height: 6),
-              Text(
-                energy.label,
-                style: TextStyle(fontWeight: FontWeight.w700, color: accent),
-              ),
+              Icon(mood.icon, color: FinchColors.check, size: 26),
+              const SizedBox(height: 4),
+              Text(mood.label, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
             ],
           ),
         ),
@@ -296,194 +260,39 @@ class _EnergyTile extends StatelessWidget {
   }
 }
 
-class _EnergyRow extends StatelessWidget {
-  const _EnergyRow({required this.model, required this.energy});
+class _MoodRow extends StatelessWidget {
+  const _MoodRow({required this.model, required this.mood});
 
   final WeekModel model;
-  final Energy energy;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Pill(
-          text: '${energy.label} energy',
-          icon: energy.icon,
-          color: FinchColors.ink,
-          tint: FinchColors.blueTint,
-        ),
-        const SizedBox(width: 8),
-        Pill(
-          text: 'Change',
-          color: FinchColors.textSecondary,
-          tint: FinchColors.border,
-          onTap: model.clearCheckIn,
-        ),
-      ],
-    );
-  }
-}
-
-class PaceCard extends StatelessWidget {
-  const PaceCard({required this.model, super.key});
-
-  final WeekModel model;
-
-  @override
-  Widget build(BuildContext context) {
-    final pace = model.pace;
-    final total = model.totalPoints;
-    final daysAfter = model.daysLeft - 1;
-    final left = model.leftAfterToday;
-    final String detail;
-    if (left <= 0) {
-      detail = 'Today\'s plan finishes the week.';
-    } else if (daysAfter <= 0) {
-      detail = '$left point${left == 1 ? '' : 's'} would be left after today, the last day.';
-    } else {
-      detail = 'After today: $left point${left == 1 ? '' : 's'} over $daysAfter day${daysAfter == 1 ? '' : 's'}.';
-    }
-    return FinchCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Week: ${model.donePoints} of $total points',
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-                ),
-              ),
-              Pill(text: pace.label, color: pace.color, tint: pace.tint),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Stack(
-            children: [
-              ProgressBar(
-                value: total == 0 ? 0 : (model.donePoints + model.openPlannedPointsToday) / total,
-                color: FinchColors.yellow,
-              ),
-              ProgressBar(
-                value: total == 0 ? 0 : model.donePoints / total,
-                color: FinchColors.green,
-                background: Colors.transparent,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Today: ${model.plannedPointsToday} point${model.plannedPointsToday == 1 ? '' : 's'} planned. $detail',
-            style: const TextStyle(fontSize: 13, color: FinchColors.textSecondary, height: 1.35),
-          ),
-          if (pace == Pace.outOfReach) ...[
-            const SizedBox(height: 6),
-            const Text(
-              'Tip: drop a step or swap a Big one for a Quick one in your plan.',
-              style: TextStyle(fontSize: 13, color: Color(0xFFC0487E)),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class GoalSliderCard extends StatelessWidget {
-  const GoalSliderCard({required this.model, required this.goal, super.key});
-
-  final WeekModel model;
-  final Goal goal;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = goal.palette;
-    final min = model.minCount(goal);
-    final max = model.maxCount(goal);
-    final count = (model.todayCount[goal.id] ?? min).clamp(min, max);
-    final planned = model.plannedFor(goal);
-    return FinchCard(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              GoalIcon(icon: p.icon, accent: p.accent, tint: p.tint, size: 30),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(goal.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-              ),
-              Text(
-                '$count of $max steps',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: p.accent),
-              ),
-            ],
-          ),
-          if (max > min)
-            SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                trackHeight: 8,
-                activeTrackColor: p.accent,
-                inactiveTrackColor: p.tint,
-                thumbColor: FinchColors.yellow,
-                overlayColor: FinchColors.yellow.withValues(alpha: 0.2),
-                activeTickMarkColor: Colors.white.withValues(alpha: 0.7),
-                inactiveTickMarkColor: p.accent.withValues(alpha: 0.3),
-                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 11),
-                showValueIndicator: ShowValueIndicator.never,
-              ),
-              child: Slider(
-                value: count.toDouble(),
-                min: min.toDouble(),
-                max: max.toDouble(),
-                divisions: max - min,
-                onChanged: (v) => model.setCount(goal, v.round()),
-              ),
-            ),
-          if (planned.isEmpty)
-            const Padding(
-              padding: EdgeInsets.only(bottom: 6),
-              child: Text('Nothing today', style: TextStyle(fontSize: 13, color: FinchColors.textSecondary)),
-            ),
-          for (final s in planned) _StepLine(step: s, accent: p.accent),
-        ],
-      ),
-    );
-  }
-}
-
-class _StepLine extends StatelessWidget {
-  const _StepLine({required this.step, required this.accent});
-
-  final GoalStep step;
-  final Color accent;
+  final Mood mood;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: [
-          Icon(
-            step.done ? Icons.check_circle_rounded : Icons.circle_outlined,
-            size: 16,
-            color: step.done ? accent : FinchColors.borderShadow,
+          Icon(mood.icon, color: FinchColors.onBackground, size: 20),
+          const SizedBox(width: 6),
+          Text(
+            'Feeling ${mood.label.toLowerCase()}',
+            style: const TextStyle(color: FinchColors.onBackground, fontSize: 13.5, fontWeight: FontWeight.w500),
           ),
-          const SizedBox(width: 8),
-          Expanded(child: Text(step.title, style: const TextStyle(fontSize: 14))),
-          if (step.carriedFrom != null) ...[
-            Pill(
-              text: 'from ${dayShort[step.carriedFrom!]}',
-              icon: Icons.redo_rounded,
-              color: FinchColors.ink,
-              tint: FinchColors.blueTint,
+          const SizedBox(width: 10),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: model.clearCheckIn,
+              child: const Text(
+                'Change',
+                style: TextStyle(
+                  color: FinchColors.onBackgroundMuted,
+                  fontSize: 14,
+                  decoration: TextDecoration.underline,
+                  decorationColor: FinchColors.onBackgroundMuted,
+                ),
+              ),
             ),
-            const SizedBox(width: 6),
-          ],
-          IgnorePointer(
-            child: SizeChip(size: step.size, onTap: () {}),
           ),
         ],
       ),
@@ -491,72 +300,82 @@ class _StepLine extends StatelessWidget {
   }
 }
 
-class TodayChecklistCard extends StatelessWidget {
-  const TodayChecklistCard({required this.model, required this.goal, super.key});
+class _Hint extends StatelessWidget {
+  const _Hint(this.text);
 
-  final WeekModel model;
-  final Goal goal;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    final p = goal.palette;
-    final planned = model.plannedFor(goal);
-    return FinchCard(
-      padding: const EdgeInsets.fromLTRB(12, 12, 16, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const SizedBox(width: 4),
-              GoalIcon(icon: p.icon, accent: p.accent, tint: p.tint, size: 30),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(goal.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          for (final s in planned)
-            InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () => model.toggle(s),
-              child: Row(
-                children: [
-                  Checkbox(
-                    value: s.done,
-                    activeColor: p.accent,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                    onChanged: (_) => model.toggle(s),
-                  ),
-                  Expanded(
-                    child: Text(
-                      s.title,
-                      style: TextStyle(
-                        fontSize: 15,
-                        decoration: s.done ? TextDecoration.lineThrough : null,
-                        color: s.done ? FinchColors.textSecondary : FinchColors.text,
-                      ),
-                    ),
-                  ),
-                  if (s.carriedFrom != null && !s.done) ...[
-                    Pill(
-                      text: 'from ${dayShort[s.carriedFrom!]}',
-                      icon: Icons.redo_rounded,
-                      color: FinchColors.ink,
-                      tint: FinchColors.blueTint,
-                    ),
-                    const SizedBox(width: 6),
-                  ],
-                  Text(
-                    '+${s.size.points}',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: p.accent),
-                  ),
-                ],
-              ),
-            ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 12, color: FinchColors.onBackgroundMuted),
       ),
+    );
+  }
+}
+
+/// A mission's goals for today. While planning: − / + to take fewer or
+/// more. While doing: a check button per goal.
+class _MissionToday extends StatelessWidget {
+  const _MissionToday({required this.model, required this.mission, required this.planning});
+
+  final WeekModel model;
+  final Mission mission;
+  final bool planning;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = mission.style;
+    final planned = model.plannedFor(mission);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        GroupHeader(
+          title: mission.title,
+          trailing: planning
+              ? [
+                  GhostIconButton(
+                    icon: Icons.remove_rounded,
+                    tooltip: 'Fewer today',
+                    onTap: model.canTakeFewer(mission) ? () => model.takeFewer(mission) : null,
+                  ),
+                  GhostIconButton(
+                    icon: Icons.add_rounded,
+                    tooltip: 'More today',
+                    onTap: model.canTakeMore(mission) ? () => model.takeMore(mission) : null,
+                  ),
+                ]
+              : const [],
+        ),
+        if (planned.isEmpty)
+          const Padding(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 4),
+            child: Text(
+              'Nothing today. Tap + to take one.',
+              style: TextStyle(color: FinchColors.onBackgroundMuted, fontSize: 13),
+            ),
+          ),
+        for (final goal in planned)
+          GoalCard(
+            title: goal.title,
+            icon: s.icon,
+            accent: s.accent,
+            muted: goal.done,
+            subtitle: goal.carriedFrom != null && !goal.done ? 'From ${dayLong[goal.carriedFrom!]}' : null,
+            trailing: planning
+                ? (goal.done ? const Tag('Done') : null)
+                : ChunkyIconButton(
+                    icon: Icons.check_rounded,
+                    filled: goal.done,
+                    tooltip: goal.done ? 'Undo' : 'Done',
+                    onTap: () => model.toggle(goal),
+                  ),
+          ),
+      ],
     );
   }
 }

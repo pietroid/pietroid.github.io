@@ -16,20 +16,20 @@ const _steps = [
   (
     title: 'Start of the week',
     description:
-        'Turn what you want to get done this week into missions, and break each one into steps. '
-        'Tap a step\'s size (Quick, Medium, Big) to show how much effort it takes. Then start the week.',
+        'Set this week\'s missions and break each one into small goals. '
+        'Add or remove goals and missions, then start the week.',
   ),
   (
     title: 'Daily',
     description:
-        'One tap tells the app your mood: low, okay or good. It picks today\'s steps from what is left '
-        'and the days remaining, and you can slide to take more or fewer. Unfinished steps move to tomorrow.',
+        'One tap tells the app your mood: low, okay or good. It picks today\'s goals from what is left '
+        'and the days remaining, and − / + take fewer or more. Unfinished goals move to tomorrow.',
   ),
   (
     title: 'End of the week',
     description:
-        'A look back that always finds something to celebrate: a finished week, or your best day, '
-        'next to last week. Before Sunday you can preview a partial or perfect week.',
+        'A peek at Sunday that always finds something to celebrate: a finished week, or your best day, '
+        'next to last week. Days still ahead are made up from your progress, so each visit differs.',
   ),
 ];
 
@@ -86,7 +86,10 @@ class _FinchWeeklyDemoState extends State<FinchWeeklyDemo> {
               ],
             ]),
         ]),
-        button(classes: 'finch-reset', onClick: _reset, [Component.text('Start over')]),
+        button(classes: 'finch-reset', onClick: _reset, [
+          span(classes: 'finch-reset-icon', attributes: {'aria-hidden': 'true'}, [Component.text('↺')]),
+          Component.text('Start over'),
+        ]),
       ]),
       div(classes: 'finch-phone', [
         FlutterEmbedView.deferred(

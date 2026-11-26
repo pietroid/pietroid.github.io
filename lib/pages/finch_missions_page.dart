@@ -32,12 +32,17 @@ class FinchMissionsPage extends StatelessComponent {
         SiteHeader(base: base),
         main_(classes: 'finch-main', [
           div(classes: 'finch-copy', [
-            h1([Component.text('Finch: Missions Demo')]),
-            p(classes: 'finch-lead', [
-              Component.text('Missions are weekly groups of goals, sized each day by how you feel.'),
+            div(classes: 'finch-title', [
+              img(classes: 'finch-title-icon', src: '${base}images/finch_icon.png', alt: ''),
+              div([
+                h1([Component.text('Finch: Missions Demo')]),
+                p(classes: 'finch-lead', [
+                  Component.text('How I would propose a new feature at Finch. Read it in 5 minutes, then play the demo.'),
+                ]),
+              ]),
             ]),
 
-            _section('Why this', [
+            _section('Collected data', [
               p([
                 Component.text(
                   'I read r/finch and ranked what users ask for most '
@@ -50,8 +55,31 @@ class FinchMissionsPage extends StatelessComponent {
                 _rank('Mental-health depth', '10 posts'),
                 _rank('Goals and planning', '7 posts'),
               ]),
+            ]),
+
+            _section('Picked theme: Goals and planning', [
+              p([strong([Component.text('Why, if it ranks 4th?')])]),
+              ul(classes: 'finch-points', [
+                li([
+                  strong([Component.text('Loudest in comments. ')]),
+                  Component.text('To-do and goal requests: 43 comments, more than any other ask.'),
+                ]),
+                li([
+                  strong([Component.text('It ties into #3. ')]),
+                  Component.text('The top post of the period asks for '),
+                  _link(_mentalHealthThread, 'suggestions from mood check-ins'),
+                  Component.text('.'),
+                ]),
+                li([
+                  strong([Component.text('Engineering-shaped and live. ')]),
+                  Component.text('#1 and #2 are art and keep-this requests; Finch is '),
+                  _link(_surveyThread, 'reworking goals'),
+                  Component.text(' right now.'),
+                ]),
+              ]),
               p([
-                Component.text('Two asks kept coming back, also in a '),
+                strong([Component.text('Two asks inside it')]),
+                Component.text(', also in a '),
                 _link(_surveyThread, 'goals survey by a Finch designer'),
                 Component.text(':'),
               ]),
@@ -82,44 +110,45 @@ class FinchMissionsPage extends StatelessComponent {
               ]),
             ]),
 
-            _section('Core premises', [
-              ol(classes: 'finch-points numbered', [
-                li([
-                  strong([Component.text('A new name. ')]),
-                  Component.text('"Mission", not "goal": it does not clash with daily goals, and it sounds fun.'),
-                ]),
-                li([
-                  strong([Component.text('Weekly. ')]),
-                  Component.text('A week is easy to grasp and makes you think in concrete steps.'),
-                ]),
-                li([
-                  strong([Component.text('Daily goals stay. ')]),
-                  Component.text('They work as they do today. Your mood decides which steps land on which day.'),
-                ]),
-                li([
-                  strong([Component.text('Mood in one tap. ')]),
-                  Component.text('Three options: low, okay, good. Users push back on being asked too much ('),
-                  _link(_mentalHealthThread, 'opt-in, not forced'),
-                  Component.text(', '),
-                  _link(_oneNotificationThread, 'one nudge a day'),
-                  Component.text('), so it stays light and skippable.'),
-                ]),
-              ]),
-            ]),
-
-            _section('Try it: three moments', [
+            // From here on the page splits: text on the left, phone on the
+            // right. FinchWeeklyDemo renders both the steps and the phone;
+            // `display: contents` lets them land in this grid's columns.
+            div(classes: 'finch-split', [
+              h2(classes: 'finch-split-title', [Component.text('Try it: three moments')]),
               const FinchWeeklyDemo(),
-            ]),
-
-            _section('What I would test next', [
-              ol(classes: 'finch-points numbered', [
-                li([Component.text('How easy it is to add several goals to a mission.')]),
-                li([Component.text('Changing the start of the week, or how long a mission lasts.')]),
-                li([Component.text('Better mood tracking, and changing plans in the middle of the day.')]),
+              _section('Core premises', [
+                ol(classes: 'finch-points numbered', [
+                  li([
+                    strong([Component.text('A new name. ')]),
+                    Component.text('"Mission", not "goal": it does not clash with daily goals, and it sounds fun.'),
+                  ]),
+                  li([
+                    strong([Component.text('Weekly. ')]),
+                    Component.text('A week is easy to grasp and makes you think in concrete steps.'),
+                  ]),
+                  li([
+                    strong([Component.text('Daily goals stay. ')]),
+                    Component.text('They work as they do today. Your mood decides which steps land on which day.'),
+                  ]),
+                  li([
+                    strong([Component.text('Mood in one tap. ')]),
+                    Component.text('Three options: low, okay, good. Users push back on being asked too much ('),
+                    _link(_mentalHealthThread, 'opt-in, not forced'),
+                    Component.text(', '),
+                    _link(_oneNotificationThread, 'one nudge a day'),
+                    Component.text('), so it stays light and skippable.'),
+                  ]),
+                ]),
               ]),
+              _section('What I would test next', [
+                ol(classes: 'finch-points numbered', [
+                  li([Component.text('How easy it is to add several goals to a mission.')]),
+                  li([Component.text('Changing the start of the week, or how long a mission lasts.')]),
+                  li([Component.text('Better mood tracking, and changing plans in the middle of the day.')]),
+                ]),
+              ]),
+              p(classes: 'finch-note', [Component.text('Mocked data, nothing is saved.')]),
             ]),
-
-            p(classes: 'finch-note', [Component.text('Mocked data, nothing is saved.')]),
           ]),
         ]),
       ]),
@@ -165,9 +194,21 @@ class FinchMissionsPage extends StatelessComponent {
       ),
       boxSizing: BoxSizing.borderBox,
     ),
-    // Leaves room on the right for the fixed phone.
-    css('.finch-copy').styles(maxWidth: 34.rem),
-    css('.finch-page h1').styles(margin: Margin.only(top: 1.rem, bottom: 0.75.rem)),
+    css('.finch-title').styles(
+      display: Display.flex,
+      margin: Margin.only(top: 1.rem),
+      alignItems: AlignItems.center,
+      gap: Gap.all(1.rem),
+    ),
+    // As tall as the title and subtitle together.
+    css('.finch-title-icon').styles(
+      width: 4.25.rem,
+      height: 4.25.rem,
+      radius: BorderRadius.circular(22.percent),
+      flex: Flex(shrink: 0),
+    ),
+    css('.finch-page h1').styles(margin: Margin.only(top: 0.px, bottom: 0.4.rem)),
+    css('.finch-page p.finch-lead').styles(margin: Margin.zero),
     css('.finch-page h2').styles(
       margin: Margin.only(top: 0.px, bottom: 1.rem),
       color: SiteDraftColors.white,
@@ -304,35 +345,56 @@ class FinchMissionsPage extends StatelessComponent {
       color: SiteDraftColors.white,
     ),
     css('.finch-reset').styles(
+      display: Display.inlineFlex,
       margin: Margin.only(top: 1.25.rem),
+      alignItems: AlignItems.center,
+      gap: Gap.all(0.5.rem),
       color: SiteDraftColors.subtitleGray,
     ),
+    css('.finch-reset-icon').styles(fontSize: 1.125.rem, lineHeight: 1.em),
     css('.finch-step-next:hover, .finch-reset:hover').styles(opacity: 0.7),
 
-    // The phone keeps the demo's own look and stays fixed on the right,
-    // below the header, aligned with the page's content column.
+    // Split area: left column for text, right column for the phone.
+    css('.finch-split').styles(
+      display: Display.grid,
+      padding: Padding.only(top: 2.rem),
+      margin: Margin.only(top: 2.rem),
+      border: Border.only(top: BorderSide(width: 1.px, color: Color('#262626'))),
+      alignItems: AlignItems.start,
+      raw: {
+        'grid-template-columns': 'minmax(0, 1fr) ${(finchDemoWidth + 20).toInt()}px',
+        // Title, steps, premises, next tests, note. The last row takes any extra
+        // height so the phone does not stretch the gaps between them.
+        'grid-template-rows': 'auto auto auto auto 1fr',
+        'column-gap': '4rem',
+      },
+    ),
+    css('.finch-split > *, .finch-steps').styles(raw: {'grid-column': '1'}),
+    css('.finch-demo').styles(display: Display.contents),
+
+    // The phone keeps the demo's own look and stays in view while the left
+    // column scrolls.
     css('.finch-phone').styles(
-      position: Position.fixed(
-        top: 5.5.rem,
-        right: Unit.expression('max(2rem, calc(50vw - 34rem))'),
-      ),
+      position: Position.sticky(top: 1.5.rem),
       width: (finchDemoWidth + 20).px,
-      height: Unit.expression('min(${(finchDemoHeight + 56).toInt()}px, calc(100vh - 7rem))'),
-      padding: Padding.symmetric(vertical: 18.px),
+      height: Unit.expression('min(${(finchDemoHeight + 56).toInt()}px, calc(100vh - 3rem))'),
+      raw: {'grid-column': '2', 'grid-row': '1 / span 5'},
+      padding: Padding.symmetric(vertical: 10.px),
       overflow: Overflow.hidden,
       border: Border.all(width: 10.px, color: Color('#2a2a2a')),
       radius: BorderRadius.circular(44.px),
       boxSizing: BoxSizing.borderBox,
-      backgroundColor: Color('#ffffff'),
+      backgroundColor: Color('#7db65f'),
     ),
 
     // Narrow screens: one column, the phone sits below the step list.
     css.media(MediaQuery.all(maxWidth: 1000.px), [
-      css('.finch-copy').styles(margin: Margin.symmetric(horizontal: Unit.auto)),
+      css('.finch-split').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)', 'grid-template-rows': 'none'}),
       css('.finch-phone').styles(
         position: Position.static,
         height: (finchDemoHeight + 56).px,
         margin: Margin.only(top: 1.5.rem, left: Unit.auto, right: Unit.auto),
+        raw: {'grid-column': '1', 'grid-row': 'auto'},
       ),
     ]),
     css.media(MediaQuery.all(maxWidth: 700.px), [
