@@ -28,6 +28,8 @@ import 'package:pietroid_github_io/components/experience/experience_section.dart
     as _experience_section;
 import 'package:pietroid_github_io/components/experience/experience_timeline.dart'
     as _experience_timeline;
+import 'package:pietroid_github_io/components/finch_weekly/finch_weekly_embed.dart'
+    as _finch_weekly_embed;
 import 'package:pietroid_github_io/components/projects/project_context.dart'
     as _project_context;
 import 'package:pietroid_github_io/components/projects/project_image.dart'
@@ -47,6 +49,8 @@ import 'package:pietroid_github_io/components/apps_client_component.dart'
 import 'package:pietroid_github_io/components/home_footer.dart' as _home_footer;
 import 'package:pietroid_github_io/components/site_header.dart' as _site_header;
 import 'package:pietroid_github_io/layouts/site_layout.dart' as _site_layout;
+import 'package:pietroid_github_io/pages/finch_missions_page.dart'
+    as _finch_missions_page;
 import 'package:pietroid_github_io/pages/home_page.dart' as _home_page;
 
 /// Default [ServerOptions] for use with your Jaspr project.
@@ -76,6 +80,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
         ClientTarget<_apps_client_component.AppsClientComponent>(
           'apps_client_component',
         ),
+    _finch_weekly_embed.FinchWeeklyDemo:
+        ClientTarget<_finch_weekly_embed.FinchWeeklyDemo>('finch_weekly_embed'),
   },
   styles: () => [
     ..._image.Image.styles,
@@ -101,6 +107,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._projects_list.ProjectsList.styles,
     ..._projects_section.ProjectsSection.styles,
     ..._site_layout.SiteLayout.styles,
+    ..._finch_missions_page.FinchMissionsPage.styles,
     ..._home_page.HomePage.styles,
   ],
 );

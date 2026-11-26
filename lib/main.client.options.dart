@@ -8,6 +8,8 @@ import 'package:jaspr/client.dart';
 
 import 'package:jaspr_content/components/_internal/zoomable_image.dart'
     deferred as _zoomable_image;
+import 'package:pietroid_github_io/components/finch_weekly/finch_weekly_embed.dart'
+    deferred as _finch_weekly_embed;
 import 'package:pietroid_github_io/components/apps_client_component.dart'
     deferred as _apps_client_component;
 
@@ -40,6 +42,10 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'apps_client_component': ClientLoader(
       (p) => _apps_client_component.AppsClientComponent(),
       loader: _apps_client_component.loadLibrary,
+    ),
+    'finch_weekly_embed': ClientLoader(
+      (p) => _finch_weekly_embed.FinchWeeklyDemo(),
+      loader: _finch_weekly_embed.loadLibrary,
     ),
   },
 );

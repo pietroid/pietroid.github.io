@@ -17,6 +17,7 @@ import 'extensions/demote_headings_extension.dart';
 import 'github_pages_base.dart';
 import 'layouts/site_layout.dart';
 import 'pages/home_page.dart';
+import 'pages/finch_missions_page.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.server.options.dart';
@@ -73,6 +74,8 @@ void main() {
         routerBuilder: (routes) => Router(
           routes: [
             Route(path: '/', builder: (_, __) => HomePage(base: base)),
+            // Unlisted demo (noindex, not linked from the site).
+            Route(path: '/internal/finch-missions', builder: (_, __) => FinchMissionsPage(base: base)),
             for (final route in routes) ...route,
           ],
         ),
