@@ -14,3 +14,5 @@ dynamic ThirdAppWidget;
 typedef ThirdAppWidgetOrStubbed = dynamic;
 dynamic FourthAppWidget;
 typedef FourthAppWidgetOrStubbed = dynamic;
+dynamic FinchWeeklyApp;
+typedef FinchWeeklyAppOrStubbed = dynamic;

@@ -55,6 +55,7 @@ pkill -f build_daemon; pkill -f jaspr
 - `web/images/` — static images. `bio_avatar.png` is used by the home page avatar.
 - `web/assets/` — static assets, including `github.svg` and `linkedin.svg` used by [SiteHeader].
 - `web/styles.css` — global base styles (fonts, body background, element styles). Component/layout styles live in their Jaspr classes as `@css` rules, not here.
+- `lib/pages/internal/` + `lib/widgets/finch_weekly/` — unlisted `/internal` pages (noindex, not linked from the site). `/internal/finch-weekly` embeds `FinchWeeklyApp`, a mocked Flutter concept demo, through `lib/components/finch_weekly/finch_weekly_embed.dart`. Its Rubik font is bundled under `assets/fonts/`.
 - `product/` — product docs and drafts. `product/drafts/` holds unpublished writing; `content/` is only for published pages.
 
 ## Conventions

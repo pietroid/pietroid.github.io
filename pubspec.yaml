@@ -31,3 +31,14 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+  fonts:
+    # Rubik (SIL Open Font License), the font finchcare.com uses. Used by the
+    # weekly goals demo under /internal.
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-400.ttf
+          weight: 400
+        - asset: assets/fonts/Rubik-500.ttf
+          weight: 500
+        - asset: assets/fonts/Rubik-700.ttf
+          weight: 700
