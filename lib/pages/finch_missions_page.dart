@@ -5,7 +5,7 @@ import '../components/finch_weekly/finch_weekly_embed.dart';
 import '../components/site_header.dart';
 import '../constants/site_styles.dart';
 
-/// `/finch-missions`: unlisted, mocked concept demo (noindex, not linked).
+/// `/internal/finch-missions`: unlisted, mocked concept demo (noindex, not linked).
 ///
 /// Two columns: the write-up scrolls on the left, the phone stays fixed on
 /// the right. The page follows the site's style; only the phone uses the

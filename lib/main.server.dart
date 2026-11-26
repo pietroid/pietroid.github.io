@@ -75,7 +75,7 @@ void main() {
           routes: [
             Route(path: '/', builder: (_, __) => HomePage(base: base)),
             // Unlisted demo (noindex, not linked from the site).
-            Route(path: '/finch-missions', builder: (_, __) => FinchMissionsPage(base: base)),
+            Route(path: '/internal/finch-missions', builder: (_, __) => FinchMissionsPage(base: base)),
             for (final route in routes) ...route,
           ],
         ),
