@@ -8,151 +8,88 @@ import 'ui.dart';
 
 /// Concept demo: energy-aware weekly goals, styled after finchcare.com.
 ///
-/// Three scenarios, switchable from the demo bar at the top:
-/// 1. Plan: goals and user-made steps at the start of the week.
-/// 2. Today: daily check-in, suggested steps, drag to adjust, carry-over.
-/// 3. Retro: end-of-week celebration and comparison with last week.
-class FinchWeeklyApp extends StatelessWidget {
-  const FinchWeeklyApp({super.key});
+/// The three steps (0 plan, 1 today, 2 retro) are picked by the host page,
+/// outside the phone: it passes [tab] and bumps [resetCount] to start over.
+/// When the app moves on by itself (e.g. "Start the week"), it reports the
+/// new step through [onTabChanged] so the page can follow.
+class FinchWeeklyApp extends StatefulWidget {
+  const FinchWeeklyApp({super.key, this.tab = 0, this.resetCount = 0, this.onTabChanged});
+
+  final int tab;
+  final int resetCount;
+  final ValueChanged<int>? onTabChanged;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Weekly goals demo',
-      theme: finchTheme(),
-      home: const _Shell(),
-    );
-  }
+  State<FinchWeeklyApp> createState() => _FinchWeeklyAppState();
 }
 
-class _Shell extends StatefulWidget {
-  const _Shell();
-
-  @override
-  State<_Shell> createState() => _ShellState();
-}
-
-class _ShellState extends State<_Shell> {
+class _FinchWeeklyAppState extends State<FinchWeeklyApp> {
   final _model = WeekModel();
-  int _tab = 0;
+  late final _tab = ValueNotifier<int>(widget.tab);
 
   @override
-  void initState() {
-    super.initState();
-    _model.addListener(_changed);
+  void didUpdateWidget(FinchWeeklyApp oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.resetCount != oldWidget.resetCount) _model.reset();
+    _tab.value = widget.tab;
   }
 
   @override
   void dispose() {
-    _model.removeListener(_changed);
+    _tab.dispose();
     _model.dispose();
     super.dispose();
   }
 
-  void _changed() => setState(() {});
+  void _go(int tab) {
+    _tab.value = tab;
+    widget.onTabChanged?.call(tab);
+  }
 
-  void _go(int tab) => setState(() => _tab = tab);
+  @override
+  Widget build(BuildContext context) {
+    // The shell lives inside the navigator (dialogs need it) and only sees
+    // the first `home`, so new tabs reach it through the notifier.
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Finch: Missions Demo',
+      theme: finchTheme(),
+      home: _Shell(model: _model, tab: _tab, onGo: _go),
+    );
+  }
+}
+
+class _Shell extends StatelessWidget {
+  const _Shell({required this.model, required this.tab, required this.onGo});
+
+  final WeekModel model;
+  final ValueNotifier<int> tab;
+  final ValueChanged<int> onGo;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            _DemoBar(
-              tab: _tab,
-              onTab: _go,
-              onReset: () {
-                _model.reset();
-                _go(0);
-              },
-            ),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: KeyedSubtree(
-                  key: ValueKey('$_tab-${_model.week}'),
-                  child: switch (_tab) {
-                    0 => PlanScreen(
-                      model: _model,
-                      onStart: () {
-                        if (!_model.started) _model.startWeek();
-                        _go(1);
-                      },
-                    ),
-                    1 => TodayScreen(model: _model, onGoToPlan: () => _go(0), onGoToRetro: () => _go(2)),
-                    _ => RetroScreen(model: _model, onPlanNext: () => _go(0)),
+        child: ListenableBuilder(
+          listenable: Listenable.merge([model, tab]),
+          builder: (context, _) => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: KeyedSubtree(
+              key: ValueKey('${tab.value}-${model.week}'),
+              child: switch (tab.value) {
+                0 => PlanScreen(
+                  model: model,
+                  onStart: () {
+                    if (!model.started) model.startWeek();
+                    onGo(1);
                   },
                 ),
-              ),
+                1 => TodayScreen(model: model, onGoToPlan: () => onGo(0), onGoToRetro: () => onGo(2)),
+                _ => RetroScreen(model: model, onPlanNext: () => onGo(0)),
+              },
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DemoBar extends StatelessWidget {
-  const _DemoBar({required this.tab, required this.onTab, required this.onReset});
-
-  final int tab;
-  final ValueChanged<int> onTab;
-  final VoidCallback onReset;
-
-  static const _tabs = [
-    (Icons.edit_calendar_rounded, 'Plan'),
-    (Icons.wb_sunny_rounded, 'Today'),
-    (Icons.celebration_rounded, 'Retro'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
-      decoration: const BoxDecoration(
-        color: FinchColors.surface,
-        border: Border(bottom: BorderSide(color: FinchColors.border, width: 2)),
-      ),
-      child: Row(
-        children: [
-          for (var i = 0; i < _tabs.length; i++)
-            Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () => onTab(i),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 150),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: i == tab ? FinchColors.yellow : FinchColors.surfaceHigh,
-                      borderRadius: BorderRadius.circular(FinchRadius.button),
-                      border: Border.all(color: i == tab ? FinchColors.yellowShadow : FinchColors.border, width: 1.5),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(_tabs[i].$1, size: 16, color: FinchColors.text),
-                        const SizedBox(width: 6),
-                        Text(
-                          '${i + 1}. ${_tabs[i].$2}',
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          const Spacer(),
-          IconButton(
-            tooltip: 'Reset demo',
-            icon: const Icon(Icons.restart_alt_rounded, color: FinchColors.textSecondary),
-            onPressed: onReset,
           ),
-        ],
+        ),
       ),
     );
   }

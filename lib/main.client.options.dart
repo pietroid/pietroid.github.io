@@ -44,7 +44,7 @@ ClientOptions get defaultClientOptions => ClientOptions(
       loader: _apps_client_component.loadLibrary,
     ),
     'finch_weekly_embed': ClientLoader(
-      (p) => _finch_weekly_embed.FinchWeeklyEmbed(),
+      (p) => _finch_weekly_embed.FinchWeeklyDemo(),
       loader: _finch_weekly_embed.loadLibrary,
     ),
   },
